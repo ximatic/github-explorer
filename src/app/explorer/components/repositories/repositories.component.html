@@ -1,0 +1,26 @@
+<div class="repositories h-full">
+  <div class="grid place-items-center h-full w-full" *ngIf="(repositories$ | async) === null; else loadedRepositories">
+    <p-progress-spinner />
+  </div>
+
+  <ng-template #loadedRepositories>
+    <div
+      class="mb-4"
+      [ngClass]="{ 'panel--disabled': isDataLoading, 'cursor-pointer': !isDataLoading }"
+      *ngFor="let repository of repositories$ | async"
+      (click)="repositoryClick(repository)"
+    >
+      <p-panel header="{{ repository.owner }}/{{ repository.name }}">
+        <div>
+          <span class="pi pi-star-fill mr-2"></span>{{ repository.stars }} |
+          {{ repository.createdAt | date }}
+        </div>
+        <div class="mt-1">
+          {{ repository.description }}
+        </div>
+      </p-panel>
+    </div>
+
+    <app-pagination (paginationChange)="onPaginationChange($event)"></app-pagination>
+  </ng-template>
+</div>

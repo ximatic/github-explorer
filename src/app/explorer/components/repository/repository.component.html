@@ -1,0 +1,51 @@
+<div class="repository h-full">
+  <div class="grid place-items-center h-full w-full" *ngIf="!repository">
+    <p-progress-spinner />
+  </div>
+
+  <ng-container *ngIf="repository">
+    <div class="mb-4">
+      <button pButton pRipple text severity="secondary" class="block !p-0" routerLink="/repositories">
+        <i class="pi pi-angle-left"></i>
+        <span pButtonLabel>Repositories</span>
+      </button>
+    </div>
+
+    <div class="mb-4">
+      <p-panel header="{{ repository.owner }}/{{ repository.name }}">
+        <div>
+          <span class="pi pi-star-fill mr-2"></span>{{ repository.stars }} |
+          {{ repository.createdAt | date }}
+        </div>
+        <div class="mt-1">
+          {{ repository.description }}
+        </div>
+        <div class="mt-2">
+          <a [href]="repository.url" target="_blank" class="underline"> <span class="pi pi-link mr-2"></span>Repository URL </a>
+        </div>
+      </p-panel>
+    </div>
+
+    <div class="mb-4" [ngClass]="{ 'panel--disabled': isDataLoading }">
+      <p-panel header="Issues">
+        <div *ngIf="!repository.issues?.length">No issues available for selected repository.</div>
+        <ng-container *ngFor="let issue of repository.issues; let isLast = last">
+          <div [ngClass]="{ 'mb-2': !isLast }">
+            <div>
+              <span class="font-bold">{{ issue.title }}</span>
+              <a [href]="issue.url" target="_blank" class="ml-2" title="Issue URL">
+                <span class="pi pi-link text-color"></span
+              ></a>
+            </div>
+            <div>
+              <small>{{ issue.author }} | {{ issue.createdAt | date }}</small>
+            </div>
+          </div>
+          <p-divider *ngIf="!isLast" />
+        </ng-container>
+      </p-panel>
+    </div>
+
+    <app-pagination (paginationChange)="onPaginationChange($event)"></app-pagination>
+  </ng-container>
+</div>

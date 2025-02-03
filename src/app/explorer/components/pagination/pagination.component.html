@@ -1,0 +1,27 @@
+<div class="pagination w-full text-center" *ngIf="pageInfo">
+  <p-button
+    icon="pi pi-angle-double-left"
+    text
+    severity="secondary"
+    [disabled]="!pageInfo.hasPreviousPage || isChangeInProgress"
+    (click)="previousPage()"
+  />
+
+  <p-select
+    [(ngModel)]="itemsPerPage"
+    (ngModelChange)="onItemsPerPageChanged($event)"
+    [options]="paginationOptions"
+    optionLabel="name"
+    optionValue="code"
+    size="small"
+    [disabled]="isChangeInProgress"
+  />
+
+  <p-button
+    icon="pi pi-angle-double-right"
+    text
+    severity="secondary"
+    [disabled]="!pageInfo.hasNextPage || isChangeInProgress"
+    (click)="nextPage()"
+  />
+</div>
