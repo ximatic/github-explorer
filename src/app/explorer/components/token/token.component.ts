@@ -13,7 +13,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 
 import { explorerActions } from '../../store/explorer.actions';
-import { selectExplorerToken } from '../../store/explorer.selectors';
+import { ExplorerError } from '../../store/explorer.errors';
+import { selectExplorerError, selectExplorerToken } from '../../store/explorer.selectors';
 import { ExplorerState } from '../../store/explorer.state';
 
 @Component({
@@ -25,6 +26,7 @@ import { ExplorerState } from '../../store/explorer.state';
 })
 export class TokenComponent implements OnInit, OnDestroy {
   // ngrx
+  error$!: Observable<ExplorerError | null>;
   token$!: Observable<string | null>;
 
   // state flags
@@ -68,9 +70,18 @@ export class TokenComponent implements OnInit, OnDestroy {
   }
 
   private initState(): void {
-    this.store.dispatch(explorerActions.reset());
     // reset Apollo's cache as new API Token will be used
     this.apollo.client.clearStore();
+
+    this.error$ = this.store.select(selectExplorerError);
+    this.subscription.add(
+      this.error$.subscribe((error: ExplorerError | null) => {
+        if (error && error === ExplorerError.InvalidToken) {
+          this.isSubmitInProgress = false;
+          this.isInvalidToken = true;
+        }
+      }),
+    );
 
     this.token$ = this.store.select(selectExplorerToken);
     this.subscription.add(
@@ -79,8 +90,6 @@ export class TokenComponent implements OnInit, OnDestroy {
         if (token) {
           this.isInvalidToken = false;
           this.router.navigate(['/repositories']);
-        } else {
-          this.isInvalidToken = true;
         }
       }),
     );
@@ -94,6 +103,7 @@ export class TokenComponent implements OnInit, OnDestroy {
     }
 
     this.isSubmitInProgress = true;
+    this.isInvalidToken = false;
     this.store.dispatch(explorerActions.tokenVerify({ token: this.tokenControl?.value }));
   }
 

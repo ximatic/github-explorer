@@ -1,10 +1,13 @@
 import { createAction, props } from '@ngrx/store';
 
 import { ExplorerPageInfo, ExplorerPagination, Repository } from '../models/explorer.model';
+import { ExplorerError } from './explorer.errors';
 
 export enum ExplorerAction {
   Reset = 'explorer/reset',
   TokenVerify = 'explorer/tokenVerify',
+  TokenVerifySuccess = 'explorer/tokenVerifySuccess',
+  TokenVerifyError = 'explorer/tokenVerifyError',
   Token = 'explorer/token',
   RepositoriesRequest = 'explorer/repositoriesRequest',
   Repositories = 'explorer/repositories',
@@ -15,6 +18,10 @@ export enum ExplorerAction {
 
 export interface ActionPropsToken {
   token: string;
+}
+
+export interface ActionPropsError {
+  error: ExplorerError;
 }
 
 export interface ActionPropsRepositoriesRequest {
@@ -42,6 +49,8 @@ export interface ActionPropsPageInfo {
 export const explorerActions = {
   reset: createAction(ExplorerAction.Reset),
   tokenVerify: createAction(ExplorerAction.TokenVerify, props<ActionPropsToken>()),
+  tokenVerifySuccess: createAction(ExplorerAction.TokenVerifySuccess, props<ActionPropsToken>()),
+  tokenVerifyError: createAction(ExplorerAction.TokenVerifyError, props<ActionPropsError>()),
   token: createAction(ExplorerAction.Token, props<ActionPropsToken>()),
   repositoriesRequest: createAction(ExplorerAction.RepositoriesRequest, props<ActionPropsRepositoriesRequest>()),
   repositories: createAction(ExplorerAction.Repositories, props<ActionPropsRepositories>()),

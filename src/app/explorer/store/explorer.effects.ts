@@ -16,6 +16,7 @@ import {
   ExplorerAction,
   explorerActions,
 } from './explorer.actions';
+import { ExplorerError } from './explorer.errors';
 
 @Injectable()
 export class ExplorerEffects {
@@ -27,8 +28,12 @@ export class ExplorerEffects {
       ofType(ExplorerAction.TokenVerify),
       exhaustMap((action: ActionPropsToken) =>
         this.explorerService.verifyToken(action.token).pipe(
-          map((result: boolean) => explorerActions.token({ token: result ? action.token : '' })),
-          catchError(() => of(explorerActions.token({ token: '' }))),
+          map((result: boolean) =>
+            result
+              ? explorerActions.tokenVerifySuccess({ token: action.token })
+              : explorerActions.tokenVerifyError({ error: ExplorerError.InvalidToken }),
+          ),
+          catchError(() => of(explorerActions.tokenVerifyError({ error: ExplorerError.InvalidToken }))),
         ),
       ),
     ),

@@ -4,6 +4,8 @@ import { ExplorerState } from './explorer.state';
 
 export const selectExplorerState = createFeatureSelector<ExplorerState>('explorer');
 
+export const selectExplorerError = createSelector(selectExplorerState, (state: ExplorerState) => state.error);
+
 export const selectExplorerToken = createSelector(selectExplorerState, (state: ExplorerState) => state.token);
 
 export const selectExplorerRepositories = createSelector(selectExplorerState, (state: ExplorerState) => state.repositories);

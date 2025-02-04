@@ -8,6 +8,7 @@ export const explorerErrorInterceptor: HttpInterceptorFn = (
 ): Observable<HttpEvent<unknown>> => {
   return next(request).pipe(
     catchError((error: HttpErrorResponse) => {
+      // TODO - improve error handling
       console.error('explorerErrorInterceptor | error:', error);
       return throwError(() => error);
     }),

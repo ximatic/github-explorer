@@ -9,9 +9,10 @@ import { ApolloTestingModule } from 'apollo-angular/testing';
 import { DEFAULT_INITIAL_EXPLORER_STATE, DEFAULT_TOKEN_1 } from '../../../../__mocks__/explorer.mocks';
 
 import { ExplorerAction } from '../../store/explorer.actions';
-import { selectExplorerToken } from '../../store/explorer.selectors';
+import { selectExplorerError, selectExplorerToken } from '../../store/explorer.selectors';
 
 import { TokenComponent } from './token.component';
+import { ExplorerError } from '../../store/explorer.errors';
 
 describe('TokenComponent', () => {
   let component: TokenComponent;
@@ -20,6 +21,7 @@ describe('TokenComponent', () => {
   let router: Router;
   let store: MockStore;
   let mockExplorerTokenSelector: any;
+  let mockExplorerErrorSelector: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -34,6 +36,7 @@ describe('TokenComponent', () => {
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     mockExplorerTokenSelector = store.overrideSelector(selectExplorerToken, null);
+    mockExplorerErrorSelector = store.overrideSelector(selectExplorerError, null);
   });
 
   beforeEach(() => {
@@ -68,12 +71,12 @@ describe('TokenComponent', () => {
 
     fixture.detectChanges();
 
-    mockExplorerTokenSelector.setResult('');
+    mockExplorerErrorSelector.setResult(ExplorerError.InvalidToken);
 
     store.refreshState();
 
-    component.token$.subscribe((token: string | null) => {
-      expect(token).toEqual('');
+    component.error$.subscribe((error: ExplorerError | null) => {
+      expect(error).toEqual(ExplorerError.InvalidToken);
       expect(component.isSubmitInProgress).toEqual(false);
       expect(component.isInvalidToken).toEqual(true);
       expect(navigateSpy).toHaveBeenCalledTimes(0);

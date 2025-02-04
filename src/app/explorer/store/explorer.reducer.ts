@@ -8,17 +8,34 @@ export const initialState: ExplorerState = {
   repositories: null,
   repository: null,
   pageInfo: null,
+  error: null,
 };
 
 export const explorerReducer = createReducer(
   initialState,
   on(explorerActions.reset, () => initialState),
-  on(explorerActions.token, (state: ExplorerState, { token }) => ({
+  on(explorerActions.tokenVerify, (state: ExplorerState) => ({
+    ...state,
+    token: null,
+    repositories: null,
+    repository: null,
+    pageInfo: null,
+    error: null,
+  })),
+  on(explorerActions.tokenVerifySuccess, (state: ExplorerState, { token }) => ({
     ...state,
     token,
     repositories: null,
     repository: null,
     pageInfo: null,
+  })),
+  on(explorerActions.tokenVerifyError, (state: ExplorerState, { error }) => ({
+    ...state,
+    token: null,
+    repositories: null,
+    repository: null,
+    pageInfo: null,
+    error: error,
   })),
   on(explorerActions.repositories, (state: ExplorerState, { repositories }) => ({
     ...state,

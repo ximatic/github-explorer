@@ -44,4 +44,5 @@ export const DEFAULT_INITIAL_EXPLORER_STATE = {
   repositories: null,
   repository: null,
   pageInfo: null,
+  error: null,
 };
