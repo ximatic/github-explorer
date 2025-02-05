@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
+import { TranslatePipe } from '@ngx-translate/core';
 import { PanelModule } from 'primeng/panel';
 
 import { Repository } from '../../models/explorer.model';
@@ -10,7 +11,7 @@ import { Repository } from '../../models/explorer.model';
   templateUrl: './repository-info.component.html',
   styleUrl: './repository-info.component.scss',
   standalone: true,
-  imports: [CommonModule, PanelModule],
+  imports: [CommonModule, TranslatePipe, PanelModule],
 })
 export class RepositoryInfoComponent {
   @Input() repository!: Repository;

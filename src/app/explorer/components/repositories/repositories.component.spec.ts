@@ -4,6 +4,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter, Router } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { MOCK_EXPLORER_PAGINATION_1, MOCK_INITIAL_EXPLORER_STATE, MOCK_REPOSITORY_1 } from '../../../../__mocks__/explorer.mocks';
 
@@ -25,7 +26,12 @@ describe('RepositoriesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RepositoriesComponent],
-      providers: [provideRouter([]), provideAnimationsAsync(), provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE })],
+      providers: [
+        provideRouter([]),
+        provideAnimationsAsync(),
+        provideTranslateService(),
+        provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE }),
+      ],
     }).compileComponents();
 
     router = TestBed.inject(Router);

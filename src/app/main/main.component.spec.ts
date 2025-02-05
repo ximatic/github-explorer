@@ -1,7 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { MOCK_INITIAL_EXPLORER_STATE } from '../../__mocks__/explorer.mocks';
 
@@ -18,7 +19,7 @@ describe('MainComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MainComponent],
-      providers: [provideRouter([]), provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE })],
+      providers: [provideRouter([]), provideTranslateService(), provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE })],
     }).compileComponents();
 
     store = TestBed.inject(MockStore);
@@ -44,4 +45,12 @@ describe('MainComponent', () => {
       type: ExplorerAction.ResetToken,
     });
   });
+
+  it('component is stopping loading', fakeAsync(() => {
+    fixture.detectChanges();
+
+    tick();
+
+    expect(component.isLoading).toBeFalsy();
+  }));
 });

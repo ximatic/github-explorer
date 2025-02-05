@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 
-import { Observable, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { TranslatePipe } from '@ngx-translate/core';
+import { Observable, Subscription } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
@@ -29,6 +30,7 @@ import { RepositoryInfoComponent } from '../repository-info/repository-info.comp
     CommonModule,
     RouterModule,
     // 3rd party imports
+    TranslatePipe,
     ButtonModule,
     DividerModule,
     PanelModule,

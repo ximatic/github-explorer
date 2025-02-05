@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
+import { provideTranslateService } from '@ngx-translate/core';
+
 import { RepositoryInfoComponent } from './repository-info.component';
 
 describe('RepositoryInfoComponent', () => {
@@ -10,7 +12,7 @@ describe('RepositoryInfoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RepositoryInfoComponent],
-      providers: [provideAnimationsAsync()],
+      providers: [provideAnimationsAsync(), provideTranslateService()],
     }).compileComponents();
   });
 

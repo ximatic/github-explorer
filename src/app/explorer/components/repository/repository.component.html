@@ -7,7 +7,7 @@
     <div class="mb-4">
       <button pButton pRipple text severity="secondary" class="block !p-0" routerLink="/repositories">
         <i class="pi pi-angle-left"></i>
-        <span pButtonLabel>Repositories</span>
+        <span pButtonLabel>{{ 'REPOSITORY.BREADCRUMBS.REPOSITORIES' | translate }}</span>
       </button>
     </div>
 
@@ -17,20 +17,21 @@
 
     <div class="mb-4" [ngClass]="{ 'panel--disabled': isDataLoading }">
       <p-panel header="Issues">
-        <div *ngIf="!repository.issues?.length">No issues available for selected repository.</div>
-        @for (issue of repository.issues; track issue; let isLast = $last) {
+        @for (issue of repository.issues; track $index; let isLast = $last) {
           <div [ngClass]="{ 'mb-2': !isLast }">
             <div>
               <span class="font-bold">{{ issue.title }}</span>
-              <a [href]="issue.url" target="_blank" class="ml-2" title="Issue URL">
-                <span class="pi pi-link text-color"></span
-              ></a>
+              <a [href]="issue.url" target="_blank" class="ml-2" [title]="'REPOSITORY.ISSUE.URL' | translate">
+                <span class="pi pi-link text-color"></span>
+              </a>
             </div>
             <div>
               <small>{{ issue.author }} | {{ issue.createdAt | date }}</small>
             </div>
           </div>
           <p-divider *ngIf="!isLast" />
+        } @empty {
+          <div>{{ 'REPOSITORY.ISSUE.EMPTY' | translate }}</div>
         }
       </p-panel>
     </div>

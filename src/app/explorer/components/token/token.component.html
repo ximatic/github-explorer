@@ -4,13 +4,15 @@
       <p>
         <span class="pi pi-github token__logo"></span>
       </p>
-      <p class="pt-2">Welcome to <strong>GitHub Explorer</strong></p>
-      <p class="pt-2 text-center">Please follow the intructions from panel below to start browsing GitHub public repositories</p>
+      <p class="pt-2">
+        {{ 'TOKEN.WELCOME' | translate }}<strong>{{ 'APP.TITLE' | translate }}</strong>
+      </p>
+      <p class="pt-2 text-center">{{ 'TOKEN.INSTRUCTIONS' | translate }}</p>
     </div>
   </p-panel>
-  <p-panel header="GitHub Authentication " class="token__panel block mb-4">
+  <p-panel [header]="'TOKEN.FORM.HEADER' | translate" class="token__panel block mb-4">
     <form [formGroup]="apiForm">
-      <div class="mb-3">Your API Token*</div>
+      <div class="mb-3">{{ 'TOKEN.FORM.TOKEN.HEADER' | translate }}</div>
       <div>
         <p-floatlabel variant="on">
           <input
@@ -24,27 +26,27 @@
               'ng-dirty': tokenControl?.dirty,
             }"
           />
-          <label for="token">API Token</label>
+          <label for="token">{{ 'TOKEN.FORM.TOKEN.LABEL' | translate }}</label>
         </p-floatlabel>
         <div *ngIf="tokenControl?.dirty && (tokenControl?.invalid || isInvalidToken())" class="text-error mt-1">
           <small>
-            <p>Provided API Token is invalid.</p>
+            <p>{{ 'TOKEN.FORM.TOKEN.ERROR.REQUIRED' | translate }}</p>
             <p>
-              Please follow
+              {{ 'TOKEN.FORM.TOKEN.ERROR.INSTRUCTIONS_1' | translate }}
               <a
                 href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens"
                 target="_blank"
                 class="font-bold underline"
-                >these instructions</a
+                >{{ 'TOKEN.FORM.TOKEN.ERROR.INSTRUCTIONS_2' | translate }}</a
               >
-              to generate a new token.
+              {{ 'TOKEN.FORM.TOKEN.ERROR.INSTRUCTIONS_3' | translate }}
             </p>
           </small>
         </div>
       </div>
       <div class="mb-3 flex items-center">
         <p-checkbox formControlName="storeToken" size="small" [binary]="true" />
-        <div class="ml-2 mt-2">Store token locally**</div>
+        <div class="ml-2 mt-2">{{ 'TOKEN.FORM.STORE_TOKEN.LABEL' | translate }}</div>
       </div>
     </form>
 
@@ -58,17 +60,15 @@
         (click)="submitForm()"
       >
         <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress()"></i>
-        <span pButtonLabel>Start browsing</span>
+        <span pButtonLabel>{{ 'TOKEN.FORM.BUTTON.START' | translate }}</span>
       </button>
     </div>
 
     <div class="mt-4">
       <small class="block">
-        * By default, API Token is stored only temporarly on your machine as long as you are on this page.
+        {{ 'TOKEN.FORM.DISCLAIMER_1' | translate }}
       </small>
-      <small class="block">
-        ** API Token can be stored locally in the browser (using <code>localStorage</code>) to simplify usage.
-      </small>
+      <small class="block" [innerHTML]="'TOKEN.FORM.DISCLAIMER_2' | translate"></small>
     </div>
   </p-panel>
 </div>

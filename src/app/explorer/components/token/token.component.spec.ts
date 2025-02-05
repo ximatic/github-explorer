@@ -4,6 +4,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter, Router } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 
 import { MOCK_INITIAL_EXPLORER_STATE, MOCK_TOKEN_1 } from '../../../../__mocks__/explorer.mocks';
@@ -26,7 +27,12 @@ describe('TokenComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ApolloTestingModule, TokenComponent],
-      providers: [provideRouter([]), provideAnimationsAsync(), provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE })],
+      providers: [
+        provideRouter([]),
+        provideTranslateService(),
+        provideAnimationsAsync(),
+        provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE }),
+      ],
     }).compileComponents();
 
     router = TestBed.inject(Router);

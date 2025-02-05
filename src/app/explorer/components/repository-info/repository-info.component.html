@@ -8,7 +8,9 @@
       {{ repository.description }}
     </div>
     <div class="mt-2" *ngIf="repository.url">
-      <a [href]="repository.url" target="_blank" class="underline"> <span class="pi pi-link mr-2"></span>Repository URL </a>
+      <a [href]="repository.url" target="_blank" class="underline">
+        <span class="pi pi-link mr-2"></span>{{ 'REPOSITORY_INFO.URL' | translate }}
+      </a>
     </div>
   </p-panel>
 </div>

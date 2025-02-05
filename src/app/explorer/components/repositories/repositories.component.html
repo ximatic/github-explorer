@@ -1,15 +1,30 @@
 <div class="repositories h-full">
-  @if ((repositories$ | async) === null) {
+  @if (repositories$ | async; as repositories) {
+    @for (repository of repositories; track $index) {
+      <div class="mb-4" [ngClass]="{ 'panel--disabled': isDataLoading }">
+        <a role="button" tabindex="0" (keypress)="repositoryClick(repository)" (click)="repositoryClick(repository)">
+          <app-repository-info [repository]="repository"></app-repository-info>
+        </a>
+      </div>
+    } @empty {
+      <div>
+        <p-panel>
+          <div class="grid place-items-center">
+            <p>
+              <span class="pi pi-exclamation-circle repositories__logo"></span>
+            </p>
+            <p class="mt-2">{{ 'REPOSITORIES.EMPTY.TITLE' | translate }}</p>
+            <p class="mt-2" [innerHTML]="'REPOSITORIES.EMPTY.SUBTITLE' | translate"></p>
+          </div>
+        </p-panel>
+      </div>
+    }
+    @if (repositories.length) {
+      <app-pagination (paginationChange)="onPaginationChange($event)"></app-pagination>
+    }
+  } @else {
     <div class="grid place-items-center h-full w-full">
       <p-progress-spinner />
     </div>
-  } @else {
-    <div class="mb-4" [ngClass]="{ 'panel--disabled': isDataLoading }" *ngFor="let repository of repositories$ | async">
-      <a role="button" tabindex="0" (keypress)="repositoryClick(repository)" (click)="repositoryClick(repository)">
-        <app-repository-info [repository]="repository"></app-repository-info>
-      </a>
-    </div>
-
-    <app-pagination (paginationChange)="onPaginationChange($event)"></app-pagination>
   }
 </div>

@@ -1,0 +1,51 @@
+{
+  "APP": {
+    "TITLE": "GitHub Explorer"
+  },
+  "HEADER": {
+    "RESET_TOKEN": "Reset API Token"
+  },
+  "TOKEN": {
+    "WELCOME": "Welcome to ",
+    "INSTRUCTIONS": "Please follow the intructions from panel below to start browsing GitHub public repositories.",
+    "FORM": {
+      "HEADER": "GitHub Authentication",
+      "TOKEN": {
+        "HEADER": "Your API Token*",
+        "LABEL": "API Token",
+        "ERROR": {
+          "REQUIRED": "Provided API Token is invalid.",
+          "INSTRUCTIONS_1": "Please follow",
+          "INSTRUCTIONS_2": "these instructions",
+          "INSTRUCTIONS_3": "to generate a new token."
+        }
+      },
+      "STORE_TOKEN": {
+        "LABEL": "Store token locally**"
+      },
+      "BUTTON": {
+        "START": "Start browsing"
+      },
+      "DISCLAIMER_1": "* By default, API Token is stored only temporarly on your machine as long as you are on this page.",
+      "DISCLAIMER_2": "** API Token can be stored locally in the browser (using <code>localStorage</code>) to simplify usage."
+    }
+  },
+  "REPOSITORIES": {
+    "EMPTY": {
+      "TITLE": "No repositories available.",
+      "SUBTITLE": "Please refresh page or try again later."
+    }
+  },
+  "REPOSITORY": {
+    "BREADCRUMBS": {
+      "REPOSITORIES": "Repositories"
+    },
+    "ISSUE": {
+      "EMPTY": "No issues available for selected repository.",
+      "URL": "Issue URL"
+    }
+  },
+  "REPOSITORY_INFO": {
+    "URL": "Repository URL"
+  }
+}

@@ -1,20 +1,26 @@
 <div class="flex h-full w-full justify-center">
   <div class="main flex flex-col h-screen w-full max-w-5xl xl:border-x">
-    <!-- header -->
-    <p-toolbar>
-      <div class="flex w-full">
-        <div class="grow text-center"><span class="pi pi-github mr-2"></span>GitHub Explorer</div>
-        <div *ngIf="token$ | async">
-          <a [routerLink]="'/'" title="Change API Token" (click)="resetToken()">
-            <span class="pi pi-power-off"></span>
-          </a>
-        </div>
+    @if (isLoading) {
+      <div class="grid place-items-center h-full w-full">
+        <p-progress-spinner />
       </div>
-    </p-toolbar>
+    } @else {
+      <!-- header -->
+      <p-toolbar>
+        <div class="flex w-full">
+          <div class="grow text-center"><span class="pi pi-github mr-2"></span>{{ 'APP.TITLE' | translate }}</div>
+          <div *ngIf="token$ | async">
+            <a [routerLink]="'/'" [title]="'HEADER.RESET_TOKEN' | translate" (click)="resetToken()">
+              <span class="pi pi-power-off"></span>
+            </a>
+          </div>
+        </div>
+      </p-toolbar>
 
-    <!-- content -->
-    <div class="grow p-3 md:p-5">
-      <router-outlet />
-    </div>
+      <!-- content -->
+      <div class="grow p-3 md:p-5">
+        <router-outlet />
+      </div>
+    }
   </div>
 </div>

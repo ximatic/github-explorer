@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import {
@@ -39,6 +40,7 @@ describe('RepositoryComponent', () => {
             }),
           },
         },
+        provideTranslateService(),
         provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE }),
       ],
     }).compileComponents();

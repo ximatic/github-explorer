@@ -17,6 +17,7 @@ import { explorerActions } from '../../store/explorer.actions';
 import { ExplorerError } from '../../store/explorer.errors';
 import { selectExplorerError, selectExplorerToken } from '../../store/explorer.selectors';
 import { ExplorerState } from '../../store/explorer.state';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-token',
@@ -25,9 +26,12 @@ import { ExplorerState } from '../../store/explorer.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
+    // Angular imports
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
+    // 3rd party imports
+    TranslatePipe,
     ButtonModule,
     CheckboxModule,
     FloatLabelModule,
