@@ -6,11 +6,11 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 
 import {
-  DEFAULT_EXPLORER_PAGINATION_1,
-  DEFAULT_INITIAL_EXPLORER_STATE,
-  DEFAULT_REPOSITORY_1,
-  DEFAULT_REPOSITORY_NAME_1,
-  DEFAULT_REPOSITORY_OWNER_1,
+  MOCK_EXPLORER_PAGINATION_1,
+  MOCK_INITIAL_EXPLORER_STATE,
+  MOCK_REPOSITORY_1,
+  MOCK_REPOSITORY_NAME_1,
+  MOCK_REPOSITORY_OWNER_1,
 } from '../../../../__mocks__/explorer.mocks';
 
 import { ExplorerAction } from '../../store/explorer.actions';
@@ -34,12 +34,12 @@ describe('RepositoryComponent', () => {
           provide: ActivatedRoute,
           useValue: {
             params: of({
-              owner: DEFAULT_REPOSITORY_OWNER_1,
-              name: DEFAULT_REPOSITORY_NAME_1,
+              owner: MOCK_REPOSITORY_OWNER_1,
+              name: MOCK_REPOSITORY_NAME_1,
             }),
           },
         },
-        provideMockStore({ initialState: DEFAULT_INITIAL_EXPLORER_STATE }),
+        provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE }),
       ],
     }).compileComponents();
 
@@ -59,11 +59,11 @@ describe('RepositoryComponent', () => {
   it('handling repository works', () => {
     fixture.detectChanges();
 
-    mockExplorerRepositorySelector.setResult(DEFAULT_REPOSITORY_1);
+    mockExplorerRepositorySelector.setResult(MOCK_REPOSITORY_1);
 
     store.refreshState();
 
-    expect(component.repository).toEqual(DEFAULT_REPOSITORY_1);
+    expect(component.repository).toEqual(MOCK_REPOSITORY_1);
   });
 
   it('handling pagination works', () => {
@@ -71,13 +71,13 @@ describe('RepositoryComponent', () => {
 
     fixture.detectChanges();
 
-    component.onPaginationChange(DEFAULT_EXPLORER_PAGINATION_1);
+    component.onPaginationChange(MOCK_EXPLORER_PAGINATION_1);
 
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: ExplorerAction.RepositoryRequest,
-      owner: DEFAULT_REPOSITORY_OWNER_1,
-      name: DEFAULT_REPOSITORY_NAME_1,
-      pagination: DEFAULT_EXPLORER_PAGINATION_1,
+      owner: MOCK_REPOSITORY_OWNER_1,
+      name: MOCK_REPOSITORY_NAME_1,
+      pagination: MOCK_EXPLORER_PAGINATION_1,
     });
   });
 
@@ -88,8 +88,8 @@ describe('RepositoryComponent', () => {
 
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: ExplorerAction.RepositoryRequest,
-      owner: DEFAULT_REPOSITORY_OWNER_1,
-      name: DEFAULT_REPOSITORY_NAME_1,
+      owner: MOCK_REPOSITORY_OWNER_1,
+      name: MOCK_REPOSITORY_NAME_1,
     });
   });
 });

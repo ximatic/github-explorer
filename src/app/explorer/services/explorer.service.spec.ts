@@ -6,16 +6,16 @@ import { gql } from 'apollo-angular';
 import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';
 
 import {
-  DEFAULT_EXPLORER_PAGINATION_1,
-  DEFAULT_REPOSITORY_NAME_1,
-  DEFAULT_REPOSITORY_OWNER_1,
-  DEFAULT_TOKEN_1,
+  MOCK_EXPLORER_PAGINATION_1,
+  MOCK_REPOSITORY_NAME_1,
+  MOCK_REPOSITORY_OWNER_1,
+  MOCK_TOKEN_1,
 } from '../../../__mocks__/explorer.mocks';
 import {
-  DEFAULT_LOAD_REPOSITORIES_RESPONSE_1,
-  DEFAULT_LOAD_REPOSITORIES_QUERY_1,
-  DEFAULT_LOAD_REPOSITORY_RESPONSE_1,
-  DEFAULT_LOAD_REPOSITORY_QUERY_1,
+  MOCK_LOAD_REPOSITORIES_RESPONSE_1,
+  MOCK_LOAD_REPOSITORIES_QUERY_1,
+  MOCK_LOAD_REPOSITORY_RESPONSE_1,
+  MOCK_LOAD_REPOSITORY_QUERY_1,
 } from '../../../__mocks__/explorer-graphql.mocks ';
 
 import { RepositoriesResponse, Repository, RepositoryIssue, RepositoryResponse } from '../models/explorer.model';
@@ -59,7 +59,7 @@ describe('ExplorerService', () => {
       const expectedResponse = true;
       let serviceResponse!: boolean;
 
-      service.verifyToken(DEFAULT_TOKEN_1).subscribe((result: boolean) => {
+      service.verifyToken(MOCK_TOKEN_1).subscribe((result: boolean) => {
         serviceResponse = result;
       });
 
@@ -77,7 +77,7 @@ describe('ExplorerService', () => {
       const expectedResponse = true;
       let serviceResponse!: boolean;
 
-      service.verifyToken(DEFAULT_TOKEN_1, true).subscribe((result: boolean) => {
+      service.verifyToken(MOCK_TOKEN_1, true).subscribe((result: boolean) => {
         serviceResponse = result;
       });
 
@@ -88,7 +88,7 @@ describe('ExplorerService', () => {
 
       expect(req.request.method).toEqual('GET');
       expect(serviceResponse).toEqual(expectedResponse);
-      expect(localStorage.getItem('gh-explorer-token')).toEqual(JSON.stringify(DEFAULT_TOKEN_1));
+      expect(localStorage.getItem('gh-explorer-token')).toEqual(JSON.stringify(MOCK_TOKEN_1));
     }));
 
     it('verifying invalid token works', fakeAsync(() => {
@@ -102,7 +102,7 @@ describe('ExplorerService', () => {
       const expectedResponse = false;
       let serviceResponse!: boolean;
 
-      service.verifyToken(DEFAULT_TOKEN_1).subscribe((result: boolean) => {
+      service.verifyToken(MOCK_TOKEN_1).subscribe((result: boolean) => {
         serviceResponse = result;
       });
 
@@ -133,9 +133,9 @@ describe('ExplorerService', () => {
 
   describe('loadRepositories()', () => {
     it('loading repositories works', fakeAsync(() => {
-      const mockData = { data: DEFAULT_LOAD_REPOSITORIES_RESPONSE_1 };
+      const mockData = { data: MOCK_LOAD_REPOSITORIES_RESPONSE_1 };
       const expectedResponse = {
-        repositories: DEFAULT_LOAD_REPOSITORIES_RESPONSE_1.search.nodes.map((node: GraphqlRepositoriesNode) => {
+        repositories: MOCK_LOAD_REPOSITORIES_RESPONSE_1.search.nodes.map((node: GraphqlRepositoriesNode) => {
           return {
             name: node.name,
             owner: node.owner.login,
@@ -145,21 +145,21 @@ describe('ExplorerService', () => {
           } as Repository;
         }),
         pageInfo: {
-          itemsPerPage: DEFAULT_EXPLORER_PAGINATION_1.itemsValue,
-          cursorStart: DEFAULT_LOAD_REPOSITORIES_RESPONSE_1.search.pageInfo.startCursor,
-          cursorEnd: DEFAULT_LOAD_REPOSITORIES_RESPONSE_1.search.pageInfo.endCursor,
-          hasNextPage: DEFAULT_LOAD_REPOSITORIES_RESPONSE_1.search.pageInfo.hasNextPage,
-          hasPreviousPage: DEFAULT_LOAD_REPOSITORIES_RESPONSE_1.search.pageInfo.hasPreviousPage,
+          itemsPerPage: MOCK_EXPLORER_PAGINATION_1.itemsValue,
+          cursorStart: MOCK_LOAD_REPOSITORIES_RESPONSE_1.search.pageInfo.startCursor,
+          cursorEnd: MOCK_LOAD_REPOSITORIES_RESPONSE_1.search.pageInfo.endCursor,
+          hasNextPage: MOCK_LOAD_REPOSITORIES_RESPONSE_1.search.pageInfo.hasNextPage,
+          hasPreviousPage: MOCK_LOAD_REPOSITORIES_RESPONSE_1.search.pageInfo.hasPreviousPage,
         },
       } as RepositoriesResponse;
       let serviceResponse!: RepositoriesResponse;
 
-      service.loadRepositories(DEFAULT_EXPLORER_PAGINATION_1).subscribe((response: RepositoriesResponse) => {
+      service.loadRepositories(MOCK_EXPLORER_PAGINATION_1).subscribe((response: RepositoriesResponse) => {
         serviceResponse = response;
       });
 
       const req = apolloMock.expectOne(gql`
-        ${DEFAULT_LOAD_REPOSITORIES_QUERY_1}
+        ${MOCK_LOAD_REPOSITORIES_QUERY_1}
       `);
 
       req.flush(mockData);
@@ -172,16 +172,16 @@ describe('ExplorerService', () => {
 
   describe('loadRepository()', () => {
     it('loading repository works', fakeAsync(() => {
-      const mockData = { data: DEFAULT_LOAD_REPOSITORY_RESPONSE_1 };
+      const mockData = { data: MOCK_LOAD_REPOSITORY_RESPONSE_1 };
       const expectedResponse = {
         repository: {
-          owner: DEFAULT_REPOSITORY_OWNER_1,
-          name: DEFAULT_REPOSITORY_NAME_1,
-          stars: DEFAULT_LOAD_REPOSITORY_RESPONSE_1.repository.stargazerCount,
-          createdAt: DEFAULT_LOAD_REPOSITORY_RESPONSE_1.repository.createdAt,
-          description: DEFAULT_LOAD_REPOSITORY_RESPONSE_1.repository.description,
-          url: DEFAULT_LOAD_REPOSITORY_RESPONSE_1.repository.url,
-          issues: DEFAULT_LOAD_REPOSITORY_RESPONSE_1.repository.issues.nodes.map((node: GraphqlRepositoryIssue) => {
+          owner: MOCK_REPOSITORY_OWNER_1,
+          name: MOCK_REPOSITORY_NAME_1,
+          stars: MOCK_LOAD_REPOSITORY_RESPONSE_1.repository.stargazerCount,
+          createdAt: MOCK_LOAD_REPOSITORY_RESPONSE_1.repository.createdAt,
+          description: MOCK_LOAD_REPOSITORY_RESPONSE_1.repository.description,
+          url: MOCK_LOAD_REPOSITORY_RESPONSE_1.repository.url,
+          issues: MOCK_LOAD_REPOSITORY_RESPONSE_1.repository.issues.nodes.map((node: GraphqlRepositoryIssue) => {
             return {
               title: node.title,
               author: node.author.login,
@@ -191,23 +191,23 @@ describe('ExplorerService', () => {
           }),
         } as Repository,
         pageInfo: {
-          itemsPerPage: DEFAULT_EXPLORER_PAGINATION_1.itemsValue,
-          cursorStart: DEFAULT_LOAD_REPOSITORY_RESPONSE_1.repository.issues.pageInfo.startCursor,
-          cursorEnd: DEFAULT_LOAD_REPOSITORY_RESPONSE_1.repository.issues.pageInfo.endCursor,
-          hasNextPage: DEFAULT_LOAD_REPOSITORY_RESPONSE_1.repository.issues.pageInfo.hasNextPage,
-          hasPreviousPage: DEFAULT_LOAD_REPOSITORY_RESPONSE_1.repository.issues.pageInfo.hasPreviousPage,
+          itemsPerPage: MOCK_EXPLORER_PAGINATION_1.itemsValue,
+          cursorStart: MOCK_LOAD_REPOSITORY_RESPONSE_1.repository.issues.pageInfo.startCursor,
+          cursorEnd: MOCK_LOAD_REPOSITORY_RESPONSE_1.repository.issues.pageInfo.endCursor,
+          hasNextPage: MOCK_LOAD_REPOSITORY_RESPONSE_1.repository.issues.pageInfo.hasNextPage,
+          hasPreviousPage: MOCK_LOAD_REPOSITORY_RESPONSE_1.repository.issues.pageInfo.hasPreviousPage,
         },
       } as RepositoryResponse;
       let serviceResponse!: RepositoryResponse;
 
       service
-        .loadRepository(DEFAULT_REPOSITORY_OWNER_1, DEFAULT_REPOSITORY_NAME_1, DEFAULT_EXPLORER_PAGINATION_1)
+        .loadRepository(MOCK_REPOSITORY_OWNER_1, MOCK_REPOSITORY_NAME_1, MOCK_EXPLORER_PAGINATION_1)
         .subscribe((response: RepositoryResponse) => {
           serviceResponse = response;
         });
 
       const req = apolloMock.expectOne(gql`
-        ${DEFAULT_LOAD_REPOSITORY_QUERY_1}
+        ${MOCK_LOAD_REPOSITORY_QUERY_1}
       `);
 
       req.flush(mockData);
@@ -220,15 +220,15 @@ describe('ExplorerService', () => {
 
   describe('loadToken()', () => {
     it('loading token works', fakeAsync(() => {
-      localStorage.setItem('gh-explorer-token', JSON.stringify(DEFAULT_TOKEN_1));
+      localStorage.setItem('gh-explorer-token', JSON.stringify(MOCK_TOKEN_1));
 
-      expect(service.loadToken()).toEqual(DEFAULT_TOKEN_1);
+      expect(service.loadToken()).toEqual(MOCK_TOKEN_1);
     }));
   });
 
   describe('resetToken()', () => {
     it('resetting token works', fakeAsync(() => {
-      localStorage.setItem('gh-explorer-token', JSON.stringify(DEFAULT_TOKEN_1));
+      localStorage.setItem('gh-explorer-token', JSON.stringify(MOCK_TOKEN_1));
       service.resetToken();
 
       expect(service.loadToken()).toEqual('');

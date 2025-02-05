@@ -1,12 +1,12 @@
 import { GraphqlRepositoriesData, GraphqlRepositoryData } from '../app/explorer/models/explorer-graphql.schema';
 
-import { DEFAULT_EXPLORER_PAGINATION_1, DEFAULT_REPOSITORY_NAME_1, DEFAULT_REPOSITORY_OWNER_1 } from './explorer.mocks';
+import { MOCK_EXPLORER_PAGINATION_1, MOCK_REPOSITORY_NAME_1, MOCK_REPOSITORY_OWNER_1 } from './explorer.mocks';
 
 // repositories
 
-export const DEFAULT_LOAD_REPOSITORIES_QUERY_1 = `
+export const MOCK_LOAD_REPOSITORIES_QUERY_1 = `
 query {
-  search(query: "is:public sort:stars-desc", type: REPOSITORY, ${DEFAULT_EXPLORER_PAGINATION_1.itemsKey}: ${DEFAULT_EXPLORER_PAGINATION_1.itemsValue}, ${DEFAULT_EXPLORER_PAGINATION_1.cursorKey}: ${DEFAULT_EXPLORER_PAGINATION_1.cursorValue}) {
+  search(query: "is:public sort:stars-desc", type: REPOSITORY, ${MOCK_EXPLORER_PAGINATION_1.itemsKey}: ${MOCK_EXPLORER_PAGINATION_1.itemsValue}, ${MOCK_EXPLORER_PAGINATION_1.cursorKey}: ${MOCK_EXPLORER_PAGINATION_1.cursorValue}) {
     nodes {
       ...repositoryFragment
     }
@@ -29,7 +29,7 @@ fragment repositoryFragment on Repository {
 }
 `;
 
-export const DEFAULT_LOAD_REPOSITORIES_RESPONSE_1: GraphqlRepositoriesData = {
+export const MOCK_LOAD_REPOSITORIES_RESPONSE_1: GraphqlRepositoriesData = {
   search: {
     pageInfo: {
       endCursor: 'Y3Vyc29yOjU=',
@@ -54,14 +54,14 @@ export const DEFAULT_LOAD_REPOSITORIES_RESPONSE_1: GraphqlRepositoriesData = {
 
 // repository
 
-export const DEFAULT_LOAD_REPOSITORY_QUERY_1 = `
+export const MOCK_LOAD_REPOSITORY_QUERY_1 = `
 query {
-  repository(owner: "${DEFAULT_REPOSITORY_OWNER_1}", name: "${DEFAULT_REPOSITORY_NAME_1}") {
+  repository(owner: "${MOCK_REPOSITORY_OWNER_1}", name: "${MOCK_REPOSITORY_NAME_1}") {
     stargazerCount
     description
     createdAt
     url
-    issues(${DEFAULT_EXPLORER_PAGINATION_1.itemsKey}: ${DEFAULT_EXPLORER_PAGINATION_1.itemsValue}, ${DEFAULT_EXPLORER_PAGINATION_1.cursorKey}: ${DEFAULT_EXPLORER_PAGINATION_1.cursorValue}, orderBy: { field: CREATED_AT, direction: DESC }) {
+    issues(${MOCK_EXPLORER_PAGINATION_1.itemsKey}: ${MOCK_EXPLORER_PAGINATION_1.itemsValue}, ${MOCK_EXPLORER_PAGINATION_1.cursorKey}: ${MOCK_EXPLORER_PAGINATION_1.cursorValue}, orderBy: { field: CREATED_AT, direction: DESC }) {
         nodes {
             title,
             createdAt
@@ -81,7 +81,7 @@ query {
 }
 `;
 
-export const DEFAULT_LOAD_REPOSITORY_RESPONSE_1: GraphqlRepositoryData = {
+export const MOCK_LOAD_REPOSITORY_RESPONSE_1: GraphqlRepositoryData = {
   repository: {
     stargazerCount: 409108,
     description: "freeCodeCamp.org's open-source codebase and curriculum. Learn to code for free.",

@@ -4,7 +4,7 @@ import { provideRouter, Router } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { DEFAULT_INITIAL_EXPLORER_STATE, DEFAULT_TOKEN_1 } from '../../../__mocks__/explorer.mocks';
+import { MOCK_INITIAL_EXPLORER_STATE, MOCK_TOKEN_1 } from '../../../__mocks__/explorer.mocks';
 
 import { selectExplorerToken } from '../store/explorer.selectors';
 
@@ -19,7 +19,7 @@ describe('ExplorerTokenGuard', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      providers: [provideRouter([]), provideMockStore({ initialState: DEFAULT_INITIAL_EXPLORER_STATE }), ExplorerTokenGuard],
+      providers: [provideRouter([]), provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE }), ExplorerTokenGuard],
     });
 
     router = TestBed.inject(Router);
@@ -56,7 +56,7 @@ describe('ExplorerTokenGuard', () => {
     it('handling exisiting Token works', (done) => {
       const navigateSpy = jest.spyOn(router, 'navigate');
 
-      mockExplorerTokenSelector.setResult(DEFAULT_TOKEN_1);
+      mockExplorerTokenSelector.setResult(MOCK_TOKEN_1);
 
       store.refreshState();
 

@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { DEFAULT_INITIAL_EXPLORER_STATE } from '../../__mocks__/explorer.mocks';
+import { MOCK_INITIAL_EXPLORER_STATE } from '../../__mocks__/explorer.mocks';
 
 import { ExplorerAction } from '../explorer/store/explorer.actions';
 
@@ -18,7 +18,7 @@ describe('MainComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MainComponent],
-      providers: [provideRouter([]), provideMockStore({ initialState: DEFAULT_INITIAL_EXPLORER_STATE })],
+      providers: [provideRouter([]), provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE })],
     }).compileComponents();
 
     store = TestBed.inject(MockStore);

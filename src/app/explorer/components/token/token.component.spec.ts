@@ -6,7 +6,7 @@ import { provideRouter, Router } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 
-import { DEFAULT_INITIAL_EXPLORER_STATE, DEFAULT_TOKEN_1 } from '../../../../__mocks__/explorer.mocks';
+import { MOCK_INITIAL_EXPLORER_STATE, MOCK_TOKEN_1 } from '../../../../__mocks__/explorer.mocks';
 
 import { ExplorerAction } from '../../store/explorer.actions';
 import { selectExplorerError, selectExplorerToken } from '../../store/explorer.selectors';
@@ -26,11 +26,7 @@ describe('TokenComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ApolloTestingModule, TokenComponent],
-      providers: [
-        provideRouter([]),
-        provideAnimationsAsync(),
-        provideMockStore({ initialState: DEFAULT_INITIAL_EXPLORER_STATE }),
-      ],
+      providers: [provideRouter([]), provideAnimationsAsync(), provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE })],
     }).compileComponents();
 
     router = TestBed.inject(Router);
@@ -53,12 +49,12 @@ describe('TokenComponent', () => {
 
     fixture.detectChanges();
 
-    mockExplorerTokenSelector.setResult(DEFAULT_TOKEN_1);
+    mockExplorerTokenSelector.setResult(MOCK_TOKEN_1);
 
     store.refreshState();
 
     component.token$.subscribe((token: string | null) => {
-      expect(token).toEqual(DEFAULT_TOKEN_1);
+      expect(token).toEqual(MOCK_TOKEN_1);
       expect(component.isSubmitInProgress()).toEqual(false);
       expect(component.isInvalidToken()).toEqual(false);
       expect(navigateSpy).toHaveBeenCalledWith([`/repositories`]);
@@ -89,13 +85,13 @@ describe('TokenComponent', () => {
 
     fixture.detectChanges();
 
-    component.apiForm.patchValue({ token: DEFAULT_TOKEN_1 });
+    component.apiForm.patchValue({ token: MOCK_TOKEN_1 });
 
     component.submitForm();
     expect(component.isSubmitInProgress()).toEqual(true);
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: ExplorerAction.TokenVerify,
-      token: DEFAULT_TOKEN_1,
+      token: MOCK_TOKEN_1,
       storeToken: false,
     });
   });
@@ -105,13 +101,13 @@ describe('TokenComponent', () => {
 
     fixture.detectChanges();
 
-    component.apiForm.patchValue({ token: DEFAULT_TOKEN_1, storeToken: true });
+    component.apiForm.patchValue({ token: MOCK_TOKEN_1, storeToken: true });
 
     component.submitForm();
     expect(component.isSubmitInProgress()).toEqual(true);
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: ExplorerAction.TokenVerify,
-      token: DEFAULT_TOKEN_1,
+      token: MOCK_TOKEN_1,
       storeToken: true,
     });
   });

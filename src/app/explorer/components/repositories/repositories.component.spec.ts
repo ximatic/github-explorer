@@ -5,11 +5,7 @@ import { provideRouter, Router } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import {
-  DEFAULT_EXPLORER_PAGINATION_1,
-  DEFAULT_INITIAL_EXPLORER_STATE,
-  DEFAULT_REPOSITORY_1,
-} from '../../../../__mocks__/explorer.mocks';
+import { MOCK_EXPLORER_PAGINATION_1, MOCK_INITIAL_EXPLORER_STATE, MOCK_REPOSITORY_1 } from '../../../../__mocks__/explorer.mocks';
 
 import { Repository } from '../../models/explorer.model';
 
@@ -29,11 +25,7 @@ describe('RepositoriesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RepositoriesComponent],
-      providers: [
-        provideRouter([]),
-        provideAnimationsAsync(),
-        provideMockStore({ initialState: DEFAULT_INITIAL_EXPLORER_STATE }),
-      ],
+      providers: [provideRouter([]), provideAnimationsAsync(), provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE })],
     }).compileComponents();
 
     router = TestBed.inject(Router);
@@ -53,12 +45,12 @@ describe('RepositoriesComponent', () => {
   it('handling repositories works', (done) => {
     fixture.detectChanges();
 
-    mockExplorerRepositoriesSelector.setResult([DEFAULT_REPOSITORY_1]);
+    mockExplorerRepositoriesSelector.setResult([MOCK_REPOSITORY_1]);
 
     store.refreshState();
 
     component.repositories$.subscribe((repositories: Repository[] | null) => {
-      expect(repositories).toEqual([DEFAULT_REPOSITORY_1]);
+      expect(repositories).toEqual([MOCK_REPOSITORY_1]);
       done();
     });
   });
@@ -68,11 +60,11 @@ describe('RepositoriesComponent', () => {
 
     fixture.detectChanges();
 
-    component.onPaginationChange(DEFAULT_EXPLORER_PAGINATION_1);
+    component.onPaginationChange(MOCK_EXPLORER_PAGINATION_1);
 
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: ExplorerAction.RepositoriesRequest,
-      pagination: DEFAULT_EXPLORER_PAGINATION_1,
+      pagination: MOCK_EXPLORER_PAGINATION_1,
     });
   });
 
@@ -82,9 +74,9 @@ describe('RepositoriesComponent', () => {
     fixture.detectChanges();
 
     component.isDataLoading = false;
-    component.repositoryClick(DEFAULT_REPOSITORY_1);
+    component.repositoryClick(MOCK_REPOSITORY_1);
 
-    expect(navigateSpy).toHaveBeenCalledWith([`${DEFAULT_REPOSITORY_1.owner}/${DEFAULT_REPOSITORY_1.name}`]);
+    expect(navigateSpy).toHaveBeenCalledWith([`${MOCK_REPOSITORY_1.owner}/${MOCK_REPOSITORY_1.name}`]);
   });
 
   it('redirecting to repository does not work when data is loading', () => {
@@ -92,7 +84,7 @@ describe('RepositoriesComponent', () => {
 
     fixture.detectChanges();
 
-    component.repositoryClick(DEFAULT_REPOSITORY_1);
+    component.repositoryClick(MOCK_REPOSITORY_1);
 
     expect(navigateSpy).toHaveBeenCalledTimes(0);
   });

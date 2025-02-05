@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { DEFAULT_INITIAL_EXPLORER_STATE, DEFAULT_TOKEN_1 } from '../../../__mocks__/explorer.mocks';
+import { MOCK_INITIAL_EXPLORER_STATE, MOCK_TOKEN_1 } from '../../../__mocks__/explorer.mocks';
 
 import { selectExplorerToken } from '../store/explorer.selectors';
 
@@ -25,7 +25,7 @@ describe('explorerTokenInterceptor', () => {
       providers: [
         provideHttpClient(withInterceptors([explorerTokenInterceptor])),
         provideHttpClientTesting(),
-        provideMockStore({ initialState: DEFAULT_INITIAL_EXPLORER_STATE }),
+        provideMockStore({ initialState: MOCK_INITIAL_EXPLORER_STATE }),
       ],
     });
 
@@ -51,7 +51,7 @@ describe('explorerTokenInterceptor', () => {
   });
 
   it('adding Token to Authorization header works for supported method (POST)', () => {
-    mockExplorerTokenSelector.setResult(DEFAULT_TOKEN_1);
+    mockExplorerTokenSelector.setResult(MOCK_TOKEN_1);
 
     store.refreshState();
 
@@ -59,11 +59,11 @@ describe('explorerTokenInterceptor', () => {
     httpClient.post(url, {}).subscribe();
 
     const req = httpMock.expectOne(url);
-    expect(req.request.headers.get('Authorization')).toEqual(`Bearer ${DEFAULT_TOKEN_1}`);
+    expect(req.request.headers.get('Authorization')).toEqual(`Bearer ${MOCK_TOKEN_1}`);
   });
 
   it('adding Token to Authorization header does not work for not supported method (GET)', () => {
-    mockExplorerTokenSelector.setResult(DEFAULT_TOKEN_1);
+    mockExplorerTokenSelector.setResult(MOCK_TOKEN_1);
 
     store.refreshState();
 
