@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 
-import { map, catchError, switchMap, exhaustMap, tap } from 'rxjs/operators';
+import { map, catchError, switchMap, exhaustMap } from 'rxjs/operators';
 
 import { ExplorerService } from '../services/explorer.service';
 
@@ -39,17 +39,14 @@ export class ExplorerEffects {
     ),
   );
 
-  resetToken$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(ExplorerAction.ResetToken),
-        tap(() => {
-          console.log('ResetToken');
-          this.explorerService.resetToken();
-          explorerActions.reset();
-        }),
-      ),
-    { dispatch: false },
+  resetToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ExplorerAction.ResetToken),
+      exhaustMap(() => {
+        this.explorerService.resetToken();
+        return of(explorerActions.reset());
+      }),
+    ),
   );
 
   loadRepositories$ = createEffect(() =>

@@ -1,0 +1,14 @@
+<div class="repository-info">
+  <p-panel header="{{ repository.owner }}/{{ repository.name }}">
+    <div>
+      <span class="pi pi-star-fill mr-2"></span>{{ repository.stars }} |
+      {{ repository.createdAt | date: 'dd-MM-yyyy' }}
+    </div>
+    <div class="mt-1">
+      {{ repository.description }}
+    </div>
+    <div class="mt-2" *ngIf="repository.url">
+      <a [href]="repository.url" target="_blank" class="underline"> <span class="pi pi-link mr-2"></span>Repository URL </a>
+    </div>
+  </p-panel>
+</div>

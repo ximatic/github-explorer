@@ -17,13 +17,26 @@ import { selectExplorerRepository } from '../../store/explorer.selectors';
 import { ExplorerState } from '../../store/explorer.state';
 
 import { PaginationComponent } from '../pagination/pagination.component';
+import { RepositoryInfoComponent } from '../repository-info/repository-info.component';
 
 @Component({
   selector: 'app-repository',
   templateUrl: './repository.component.html',
   styleUrl: './repository.component.scss',
   standalone: true,
-  imports: [CommonModule, RouterModule, ButtonModule, DividerModule, PanelModule, ProgressSpinnerModule, PaginationComponent],
+  imports: [
+    // Angular imports
+    CommonModule,
+    RouterModule,
+    // 3rd party imports
+    ButtonModule,
+    DividerModule,
+    PanelModule,
+    ProgressSpinnerModule,
+    // other
+    RepositoryInfoComponent,
+    PaginationComponent,
+  ],
 })
 export class RepositoryComponent implements OnInit, OnDestroy {
   // ngrx

@@ -1,7 +1,15 @@
 <div class="token">
-  <p-panel class="token__panel">
-    <span> Enter your API token to start browsing issues of public repositories. </span>
-    <form [formGroup]="apiForm" class="mt-4">
+  <p-panel class="token__panel block mb-4">
+    <div class="grid place-items-center">
+      <p>
+        <span class="pi pi-github token__logo"></span>
+      </p>
+      <p class="pt-2">Welcome to <strong>GitHub Explorer</strong></p>
+      <p class="pt-2 text-center">Please follow the intructions from panel below to start browsing GitHub public repositories</p>
+    </div>
+  </p-panel>
+  <p-panel header="GitHub Authentication " class="token__panel block mb-4">
+    <form [formGroup]="apiForm">
       <div class="mb-3">Your API Token*</div>
       <div>
         <p-floatlabel variant="on">
@@ -36,7 +44,7 @@
       </div>
       <div class="mb-3 flex items-center">
         <p-checkbox formControlName="storeToken" size="small" [binary]="true" />
-        <div class="ml-2 mt-2">Store API Token locally**</div>
+        <div class="ml-2 mt-2">Store token locally**</div>
       </div>
     </form>
 
@@ -55,8 +63,12 @@
     </div>
 
     <div class="mt-4">
-      <small class="block"> * API Token is stored only temporarly on your machine as long as you are on this page. </small>
-      <small class="block"> ** API Token can be stored locally in the browser to simplify usage. </small>
+      <small class="block">
+        * By default, API Token is stored only temporarly on your machine as long as you are on this page.
+      </small>
+      <small class="block">
+        ** API Token can be stored locally in the browser (using <code>localStorage</code>) to simplify usage.
+      </small>
     </div>
   </p-panel>
 </div>
