@@ -5,6 +5,7 @@ import { ExplorerError } from './explorer.errors';
 
 export enum ExplorerAction {
   Reset = 'explorer/reset',
+  ResetToken = 'explorer/resetToken',
   TokenVerify = 'explorer/tokenVerify',
   TokenVerifySuccess = 'explorer/tokenVerifySuccess',
   TokenVerifyError = 'explorer/tokenVerifyError',
@@ -22,6 +23,10 @@ export interface ActionPropsToken {
 
 export interface ActionPropsError {
   error: ExplorerError;
+}
+
+export interface ActionPropsTokenVerify extends ActionPropsToken {
+  storeToken?: boolean;
 }
 
 export interface ActionPropsRepositoriesRequest {
@@ -48,7 +53,8 @@ export interface ActionPropsPageInfo {
 
 export const explorerActions = {
   reset: createAction(ExplorerAction.Reset),
-  tokenVerify: createAction(ExplorerAction.TokenVerify, props<ActionPropsToken>()),
+  resetToken: createAction(ExplorerAction.ResetToken),
+  tokenVerify: createAction(ExplorerAction.TokenVerify, props<ActionPropsTokenVerify>()),
   tokenVerifySuccess: createAction(ExplorerAction.TokenVerifySuccess, props<ActionPropsToken>()),
   tokenVerifyError: createAction(ExplorerAction.TokenVerifyError, props<ActionPropsError>()),
   token: createAction(ExplorerAction.Token, props<ActionPropsToken>()),

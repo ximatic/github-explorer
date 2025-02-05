@@ -7,16 +7,6 @@ export interface GraphqlPageInfo {
   hasNextPage: boolean;
 }
 
-// verify
-
-export interface GraphqlVerifyDataViewer {
-  login: string;
-}
-
-export interface GraphqlVerifyData {
-  viewer: GraphqlVerifyDataViewer;
-}
-
 // repositories
 
 export interface GraphqlRepositoriesNodeOwner {

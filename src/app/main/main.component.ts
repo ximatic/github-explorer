@@ -33,7 +33,7 @@ export class MainComponent implements OnInit {
   // user interactions
 
   resetToken(): void {
-    this.store.dispatch(explorerActions.reset());
+    this.store.dispatch(explorerActions.resetToken());
   }
 
   // initialization

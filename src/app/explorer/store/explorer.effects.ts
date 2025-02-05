@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 
-import { map, catchError, switchMap, exhaustMap } from 'rxjs/operators';
+import { map, catchError, switchMap, exhaustMap, tap } from 'rxjs/operators';
 
 import { ExplorerService } from '../services/explorer.service';
 
@@ -12,7 +12,7 @@ import { defaultExplorerPagination, RepositoriesResponse, RepositoryResponse } f
 import {
   ActionPropsRepositoriesRequest,
   ActionPropsRepositoryRequest,
-  ActionPropsToken,
+  ActionPropsTokenVerify,
   ExplorerAction,
   explorerActions,
 } from './explorer.actions';
@@ -26,8 +26,8 @@ export class ExplorerEffects {
   verifyToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ExplorerAction.TokenVerify),
-      exhaustMap((action: ActionPropsToken) =>
-        this.explorerService.verifyToken(action.token).pipe(
+      exhaustMap((action: ActionPropsTokenVerify) =>
+        this.explorerService.verifyToken(action.token, action.storeToken).pipe(
           map((result: boolean) =>
             result
               ? explorerActions.tokenVerifySuccess({ token: action.token })
@@ -37,6 +37,19 @@ export class ExplorerEffects {
         ),
       ),
     ),
+  );
+
+  resetToken$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ExplorerAction.ResetToken),
+        tap(() => {
+          console.log('ResetToken');
+          this.explorerService.resetToken();
+          explorerActions.reset();
+        }),
+      ),
+    { dispatch: false },
   );
 
   loadRepositories$ = createEffect(() =>

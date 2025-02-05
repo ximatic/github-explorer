@@ -59,8 +59,8 @@ describe('TokenComponent', () => {
 
     component.token$.subscribe((token: string | null) => {
       expect(token).toEqual(DEFAULT_TOKEN_1);
-      expect(component.isSubmitInProgress).toEqual(false);
-      expect(component.isInvalidToken).toEqual(false);
+      expect(component.isSubmitInProgress()).toEqual(false);
+      expect(component.isInvalidToken()).toEqual(false);
       expect(navigateSpy).toHaveBeenCalledWith([`/repositories`]);
       done();
     });
@@ -77,8 +77,8 @@ describe('TokenComponent', () => {
 
     component.error$.subscribe((error: ExplorerError | null) => {
       expect(error).toEqual(ExplorerError.InvalidToken);
-      expect(component.isSubmitInProgress).toEqual(false);
-      expect(component.isInvalidToken).toEqual(true);
+      expect(component.isSubmitInProgress()).toEqual(false);
+      expect(component.isInvalidToken()).toEqual(true);
       expect(navigateSpy).toHaveBeenCalledTimes(0);
       done();
     });
@@ -92,10 +92,27 @@ describe('TokenComponent', () => {
     component.apiForm.patchValue({ token: DEFAULT_TOKEN_1 });
 
     component.submitForm();
-    expect(component.isSubmitInProgress).toEqual(true);
+    expect(component.isSubmitInProgress()).toEqual(true);
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: ExplorerAction.TokenVerify,
       token: DEFAULT_TOKEN_1,
+      storeToken: false,
+    });
+  });
+
+  it('handling submit of valid form with token storing works', () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+    fixture.detectChanges();
+
+    component.apiForm.patchValue({ token: DEFAULT_TOKEN_1, storeToken: true });
+
+    component.submitForm();
+    expect(component.isSubmitInProgress()).toEqual(true);
+    expect(dispatchSpy).toHaveBeenCalledWith({
+      type: ExplorerAction.TokenVerify,
+      token: DEFAULT_TOKEN_1,
+      storeToken: true,
     });
   });
 
@@ -103,6 +120,6 @@ describe('TokenComponent', () => {
     fixture.detectChanges();
 
     expect(component.submitForm()).toBeUndefined();
-    expect(component.isSubmitInProgress).toEqual(false);
+    expect(component.isSubmitInProgress()).toEqual(false);
   });
 });

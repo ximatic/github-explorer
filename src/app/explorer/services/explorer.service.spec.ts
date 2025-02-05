@@ -13,8 +13,6 @@ import {
 } from '../../../__mocks__/explorer.mocks';
 import {
   DEFAULT_LOAD_REPOSITORIES_RESPONSE_1,
-  DEFAULT_TOKEN_VERIFY_RESPONSE_1,
-  DEFAULT_TOKEN_VERIFY_QUERY_1,
   DEFAULT_LOAD_REPOSITORIES_QUERY_1,
   DEFAULT_LOAD_REPOSITORY_RESPONSE_1,
   DEFAULT_LOAD_REPOSITORY_QUERY_1,
@@ -38,6 +36,8 @@ describe('ExplorerService', () => {
       providers: [provideHttpClient(), provideHttpClientTesting(), ExplorerService],
       teardown: { destroyAfterEach: false },
     });
+
+    localStorage.clear();
 
     httpMock = TestBed.inject(HttpTestingController);
     apolloMock = TestBed.inject(ApolloTestingController);
@@ -70,6 +70,25 @@ describe('ExplorerService', () => {
 
       expect(req.request.method).toEqual('GET');
       expect(serviceResponse).toEqual(expectedResponse);
+    }));
+
+    it('verifying valid token with storing in local storage works', fakeAsync(() => {
+      const mockData = '';
+      const expectedResponse = true;
+      let serviceResponse!: boolean;
+
+      service.verifyToken(DEFAULT_TOKEN_1, true).subscribe((result: boolean) => {
+        serviceResponse = result;
+      });
+
+      const req = httpMock.expectOne(`${environment.githubTokenVerification}`);
+      req.flush(mockData);
+
+      tick();
+
+      expect(req.request.method).toEqual('GET');
+      expect(serviceResponse).toEqual(expectedResponse);
+      expect(localStorage.getItem('gh-explorer-token')).toEqual(JSON.stringify(DEFAULT_TOKEN_1));
     }));
 
     it('verifying invalid token works', fakeAsync(() => {
@@ -105,48 +124,6 @@ describe('ExplorerService', () => {
       });
 
       httpMock.expectNone(`${environment.githubTokenVerification}`);
-
-      tick();
-
-      expect(serviceResponse).toEqual(expectedResponse);
-    }));
-  });
-
-  describe('verifyTokenGraphQl()', () => {
-    it('verifying valid token works', fakeAsync(() => {
-      const mockData = { data: DEFAULT_TOKEN_VERIFY_RESPONSE_1 };
-      const expectedResponse = true;
-      let serviceResponse!: boolean;
-
-      service.verifyTokenGraphQl(DEFAULT_TOKEN_1).subscribe((response: boolean) => {
-        serviceResponse = response;
-      });
-
-      const req = apolloMock.expectOne(gql`
-        ${DEFAULT_TOKEN_VERIFY_QUERY_1}
-      `);
-
-      req.flush(mockData);
-
-      tick();
-
-      expect(serviceResponse).toEqual(expectedResponse);
-    }));
-
-    it('verifying invalid token works', fakeAsync(() => {
-      const mockData = {};
-      const expectedResponse = false;
-      let serviceResponse!: boolean;
-
-      service.verifyTokenGraphQl('').subscribe((response: boolean) => {
-        serviceResponse = response;
-      });
-
-      const req = apolloMock.expectOne(gql`
-        ${DEFAULT_TOKEN_VERIFY_QUERY_1}
-      `);
-
-      req.flush(mockData);
 
       tick();
 
@@ -238,6 +215,23 @@ describe('ExplorerService', () => {
       tick();
 
       expect(serviceResponse).toEqual(expectedResponse);
+    }));
+  });
+
+  describe('loadToken()', () => {
+    it('loading token works', fakeAsync(() => {
+      localStorage.setItem('gh-explorer-token', JSON.stringify(DEFAULT_TOKEN_1));
+
+      expect(service.loadToken()).toEqual(DEFAULT_TOKEN_1);
+    }));
+  });
+
+  describe('resetToken()', () => {
+    it('resetting token works', fakeAsync(() => {
+      localStorage.setItem('gh-explorer-token', JSON.stringify(DEFAULT_TOKEN_1));
+      service.resetToken();
+
+      expect(service.loadToken()).toEqual('');
     }));
   });
 });

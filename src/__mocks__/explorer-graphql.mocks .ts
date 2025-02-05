@@ -1,25 +1,6 @@
-import {
-  GraphqlRepositoriesData,
-  GraphqlRepositoryData,
-  GraphqlVerifyData,
-} from '../app/explorer/models/explorer-graphql.schema';
+import { GraphqlRepositoriesData, GraphqlRepositoryData } from '../app/explorer/models/explorer-graphql.schema';
 
 import { DEFAULT_EXPLORER_PAGINATION_1, DEFAULT_REPOSITORY_NAME_1, DEFAULT_REPOSITORY_OWNER_1 } from './explorer.mocks';
-
-// verify token
-export const DEFAULT_TOKEN_VERIFY_QUERY_1 = `
-  query {
-    viewer {
-      login
-    }
-  }
-`;
-
-export const DEFAULT_TOKEN_VERIFY_RESPONSE_1: GraphqlVerifyData = {
-  viewer: {
-    login: 'test-login-1',
-  },
-};
 
 // repositories
 

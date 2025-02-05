@@ -20,7 +20,6 @@ import {
   GraphqlRepositoriesNode,
   GraphqlRepositoryData,
   GraphqlRepositoryIssue,
-  GraphqlVerifyData,
 } from '../models/explorer-graphql.schema';
 
 import { environment } from '../../../environments/environment';
@@ -29,43 +28,33 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class ExplorerService {
+  private tokenStorageKey = 'gh-explorer-token';
+
   constructor(
     private httpClient: HttpClient,
     private apollo: Apollo,
   ) {}
 
-  // this is GitHub's recommended way to verify access token
-  verifyToken(token: string): Observable<boolean> {
+  // token verification
+
+  verifyToken(token: string, storeToken?: boolean): Observable<boolean> {
     if (!token) {
       return of(false);
     }
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     return this.httpClient.get(environment.githubTokenVerification, { headers, responseType: 'text' }).pipe(
-      map(() => true),
+      map(() => {
+        if (storeToken) {
+          this.storeToken(token);
+        }
+        return true;
+      }),
       catchError(() => of(false)),
     );
   }
 
-  // as an alternative (to only use GraphQL requests), solution could be used with simple request
-  verifyTokenGraphQl(token: string): Observable<boolean> {
-    return this.apollo
-      .query<GraphqlVerifyData>({
-        query: gql`
-          query {
-            viewer {
-              login
-            }
-          }
-        `,
-        context: {
-          headers: new HttpHeaders({
-            authorization: `Bearer ${token}`,
-          }),
-        },
-      })
-      .pipe(map((result: ApolloQueryResult<GraphqlVerifyData>) => !!result?.data?.viewer?.login));
-  }
+  // github - GraphQL
 
   loadRepositories(pagination: ExplorerPagination = defaultExplorerPagination): Observable<RepositoriesResponse> {
     return this.apollo
@@ -177,6 +166,22 @@ export class ExplorerService {
         }),
       );
   }
+
+  // token
+
+  loadToken(): string {
+    return JSON.parse(localStorage.getItem(this.tokenStorageKey) || '""');
+  }
+
+  resetToken(): void {
+    localStorage.removeItem(this.tokenStorageKey);
+  }
+
+  private storeToken(token: string): void {
+    localStorage.setItem(this.tokenStorageKey, JSON.stringify(token));
+  }
+
+  // pagination
 
   private createPageInfo(itemsPerPage: number, pageInfo: GraphqlPageInfo): ExplorerPageInfo {
     return {

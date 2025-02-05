@@ -1,9 +1,9 @@
 <div class="token">
   <p-panel class="token__panel">
     <span> Enter your API token to start browsing issues of public repositories. </span>
-    <div [formGroup]="apiForm" class="mt-4">
+    <form [formGroup]="apiForm" class="mt-4">
       <div class="mb-3">Your API Token*</div>
-      <div class="mb-3">
+      <div>
         <p-floatlabel variant="on">
           <input
             pInputText
@@ -12,13 +12,13 @@
             formControlName="token"
             class="w-full"
             [ngClass]="{
-              'ng-invalid': tokenControl?.invalid || isInvalidToken,
+              'ng-invalid': tokenControl?.invalid || isInvalidToken(),
               'ng-dirty': tokenControl?.dirty,
             }"
           />
           <label for="token">API Token</label>
         </p-floatlabel>
-        <div *ngIf="tokenControl?.dirty && (tokenControl?.invalid || isInvalidToken)" class="text-error mt-1">
+        <div *ngIf="tokenControl?.dirty && (tokenControl?.invalid || isInvalidToken())" class="text-error mt-1">
           <small>
             <p>Provided API Token is invalid.</p>
             <p>
@@ -34,24 +34,29 @@
           </small>
         </div>
       </div>
-    </div>
+      <div class="mb-3 flex items-center">
+        <p-checkbox formControlName="storeToken" size="small" [binary]="true" />
+        <div class="ml-2 mt-2">Store API Token locally**</div>
+      </div>
+    </form>
 
     <div class="mt-4">
       <button
         pButton
         pRipple
         severity="primary"
-        [disabled]="apiForm.invalid || isSubmitInProgress"
+        [disabled]="apiForm.invalid || isSubmitInProgress()"
         class="block w-full"
         (click)="submitForm()"
       >
-        <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress"></i>
+        <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress()"></i>
         <span pButtonLabel>Start browsing</span>
       </button>
     </div>
 
     <div class="mt-4">
-      <small> * API Token is stored only temporarly on your machine as long as you are on this page. </small>
+      <small class="block"> * API Token is stored only temporarly on your machine as long as you are on this page. </small>
+      <small class="block"> ** API Token can be stored locally in the browser to simplify usage. </small>
     </div>
   </p-panel>
 </div>

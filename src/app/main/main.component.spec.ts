@@ -41,7 +41,7 @@ describe('MainComponent', () => {
     component.resetToken();
 
     expect(dispatchSpy).toHaveBeenCalledWith({
-      type: ExplorerAction.Reset,
+      type: ExplorerAction.ResetToken,
     });
   });
 });

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
@@ -8,6 +8,7 @@ import { Apollo } from 'apollo-angular';
 import { Observable, skip, Subscription } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
@@ -21,8 +22,18 @@ import { ExplorerState } from '../../store/explorer.state';
   selector: 'app-token',
   templateUrl: './token.component.html',
   styleUrl: './token.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, ButtonModule, FloatLabelModule, InputTextModule, PanelModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    ButtonModule,
+    CheckboxModule,
+    FloatLabelModule,
+    InputTextModule,
+    PanelModule,
+  ],
 })
 export class TokenComponent implements OnInit, OnDestroy {
   // ngrx
@@ -30,8 +41,8 @@ export class TokenComponent implements OnInit, OnDestroy {
   token$!: Observable<string | null>;
 
   // state flags
-  isInvalidToken = false;
-  isSubmitInProgress = false;
+  isInvalidToken = signal(false);
+  isSubmitInProgress = signal(false);
 
   // form
   apiForm!: FormGroup;
@@ -62,6 +73,10 @@ export class TokenComponent implements OnInit, OnDestroy {
     return this.apiForm.get('token');
   }
 
+  get storeTokenControl(): AbstractControl | null {
+    return this.apiForm.get('storeToken');
+  }
+
   // initialization
 
   private init(): void {
@@ -75,10 +90,10 @@ export class TokenComponent implements OnInit, OnDestroy {
 
     this.error$ = this.store.select(selectExplorerError);
     this.subscription.add(
-      this.error$.subscribe((error: ExplorerError | null) => {
+      this.error$.pipe(skip(1)).subscribe((error: ExplorerError | null) => {
         if (error && error === ExplorerError.InvalidToken) {
-          this.isSubmitInProgress = false;
-          this.isInvalidToken = true;
+          this.isSubmitInProgress.set(false);
+          this.isInvalidToken.set(true);
         }
       }),
     );
@@ -86,9 +101,9 @@ export class TokenComponent implements OnInit, OnDestroy {
     this.token$ = this.store.select(selectExplorerToken);
     this.subscription.add(
       this.token$.pipe(skip(1)).subscribe((token: string | null) => {
-        this.isSubmitInProgress = false;
+        this.isSubmitInProgress.set(false);
         if (token) {
-          this.isInvalidToken = false;
+          this.isInvalidToken.set(false);
           this.router.navigate(['/repositories']);
         }
       }),
@@ -102,14 +117,17 @@ export class TokenComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isSubmitInProgress = true;
-    this.isInvalidToken = false;
-    this.store.dispatch(explorerActions.tokenVerify({ token: this.tokenControl?.value }));
+    this.isSubmitInProgress.set(true);
+    this.isInvalidToken.set(false);
+    this.store.dispatch(
+      explorerActions.tokenVerify({ token: this.tokenControl?.value, storeToken: this.storeTokenControl?.value }),
+    );
   }
 
   private initForm(): void {
     this.apiForm = this.formBuilder.group({
       token: ['', Validators.required],
+      storeToken: [false],
     });
   }
 }
