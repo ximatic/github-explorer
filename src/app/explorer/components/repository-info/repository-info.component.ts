@@ -10,7 +10,6 @@ import { Repository } from '../../models/explorer.model';
   selector: 'app-repository-info',
   templateUrl: './repository-info.component.html',
   styleUrl: './repository-info.component.scss',
-  standalone: true,
   imports: [CommonModule, TranslatePipe, PanelModule],
 })
 export class RepositoryInfoComponent {

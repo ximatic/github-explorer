@@ -23,7 +23,6 @@ import { ExplorerState } from '../../store/explorer.state';
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.scss',
-  standalone: true,
   imports: [CommonModule, FormsModule, ButtonModule, SelectModule],
 })
 export class PaginationComponent implements OnInit, OnDestroy {

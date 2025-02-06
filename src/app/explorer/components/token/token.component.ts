@@ -24,7 +24,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './token.component.html',
   styleUrl: './token.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
     // Angular imports
     CommonModule,

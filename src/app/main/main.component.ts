@@ -17,7 +17,6 @@ import { ExplorerState } from '../explorer/store/explorer.state';
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
-  standalone: true,
   imports: [CommonModule, RouterModule, TranslatePipe, ToolbarModule, ProgressSpinnerModule],
   providers: [TranslateService],
 })

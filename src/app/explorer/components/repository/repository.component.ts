@@ -24,7 +24,6 @@ import { RepositoryInfoComponent } from '../repository-info/repository-info.comp
   selector: 'app-repository',
   templateUrl: './repository.component.html',
   styleUrl: './repository.component.scss',
-  standalone: true,
   imports: [
     // Angular imports
     CommonModule,

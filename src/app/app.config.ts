@@ -30,7 +30,7 @@ import { routes } from './app.routes';
 
 import { DEFAULT_LANGUAGE } from './explorer/constants/explorer.const';
 
-export const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
+const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './i18n/', '.json');
 
 function initializeApplication(): Promise<boolean> {
@@ -56,8 +56,9 @@ function initializeApplication(): Promise<boolean> {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideAppInitializer(initializeApplication),
     provideHttpClient(withInterceptors([explorerTokenInterceptor, explorerErrorInterceptor])),
+    provideRouter(routes),
     // NgRx
     provideEffects([ExplorerEffects]),
     provideStore({
@@ -86,7 +87,5 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
-    // other
-    provideAppInitializer(initializeApplication),
   ],
 };
