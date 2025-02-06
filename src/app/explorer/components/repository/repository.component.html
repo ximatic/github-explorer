@@ -1,8 +1,27 @@
 <div class="repository h-full">
   @if (!repository) {
-    <div class="grid place-items-center h-full w-full">
-      <p-progress-spinner />
-    </div>
+    @if (isDataLoading) {
+      <div class="grid place-items-center h-full w-full">
+        <p-progress-spinner />
+      </div>
+    } @else {
+      <div>
+        <p-panel>
+          <div class="grid place-items-center">
+            <p>
+              <span class="pi pi-exclamation-circle !text-5xl"></span>
+            </p>
+            <p class="mt-2">{{ 'REPOSITORY.EMPTY.TITLE' | translate }}</p>
+            <p class="mt-2" [innerHTML]="'REPOSITORY.EMPTY.SUBTITLE' | translate"></p>
+          </div>
+        </p-panel>
+      </div>
+      <div class="mt-4">
+        <button pButton pRipple severity="primary" class="block w-full" routerLink="/repositories">
+          <span pButtonLabel>{{ 'REPOSITORY.BREADCRUMBS.REPOSITORIES' | translate }}</span>
+        </button>
+      </div>
+    }
   } @else {
     <div class="mb-4">
       <button pButton pRipple text severity="secondary" class="block !p-0" routerLink="/repositories">

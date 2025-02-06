@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, skip, Subscription } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
@@ -88,7 +88,7 @@ export class RepositoryComponent implements OnInit, OnDestroy {
   private initState(): void {
     this.repository$ = this.store.select(selectExplorerRepository);
     this.subscription.add(
-      this.repository$.subscribe((repository: Repository | null) => {
+      this.repository$.pipe(skip(1)).subscribe((repository: Repository | null) => {
         this.repository = repository;
 
         this.isDataLoading = false;

@@ -44,7 +44,7 @@ export const explorerReducer = createReducer(
   })),
   on(explorerActions.repository, (state: ExplorerState, { repository }) => ({
     ...state,
-    repository: repository,
+    repository,
   })),
   on(explorerActions.pageInfo, (state: ExplorerState, { pageInfo }) => ({
     ...state,

@@ -11,12 +11,17 @@
         <p-panel>
           <div class="grid place-items-center">
             <p>
-              <span class="pi pi-exclamation-circle repositories__logo"></span>
+              <span class="pi pi-exclamation-circle !text-5xl"></span>
             </p>
             <p class="mt-2">{{ 'REPOSITORIES.EMPTY.TITLE' | translate }}</p>
             <p class="mt-2" [innerHTML]="'REPOSITORIES.EMPTY.SUBTITLE' | translate"></p>
           </div>
         </p-panel>
+      </div>
+      <div class="mt-4">
+        <button pButton pRipple severity="primary" class="block w-full" routerLink="/token">
+          <span pButtonLabel>{{ 'REPOSITORIES.BUTTON.HOME' | translate }}</span>
+        </button>
       </div>
     }
     @if (repositories.length) {

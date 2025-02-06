@@ -34,11 +34,18 @@
     "EMPTY": {
       "TITLE": "No repositories available.",
       "SUBTITLE": "Please refresh page or try again later."
+    },
+    "BUTTON": {
+      "HOME": "Home"
     }
   },
   "REPOSITORY": {
     "BREADCRUMBS": {
       "REPOSITORIES": "Repositories"
+    },
+    "EMPTY": {
+      "TITLE": "No repository available.",
+      "SUBTITLE": "Please refresh page or try again later."
     },
     "ISSUE": {
       "EMPTY": "No issues available for selected repository.",
