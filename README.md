@@ -35,6 +35,10 @@ Solution is using following 3rd party libraries (on top of the latest Angular 19
 - NgRx - for state management
 - Apollo - for GraphQL requests
 
+## Alternatives
+
+Same application, but written in React, is available at [GitHub](https://github.com/ximatic/github-explorer-react)
+
 ## TODO
 
 TODOs:
