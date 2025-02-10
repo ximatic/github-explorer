@@ -51,36 +51,34 @@ export class ExplorerEffects {
 
   loadRepositories$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ExplorerAction.RepositoriesRequest),
+      ofType(ExplorerAction.LoadRepositories),
       exhaustMap((action: ActionPropsRepositoriesRequest) =>
-        this.explorerService
-          .loadRepositories(action.pagination || defaultExplorerPagination)
-          .pipe(
-            switchMap((repositoriesResponse: RepositoriesResponse) =>
-              of(
-                explorerActions.pageInfo({ pageInfo: repositoriesResponse.pageInfo }),
-                explorerActions.repositories({ repositories: repositoriesResponse.repositories }),
-              ),
+        this.explorerService.loadRepositories(action.pagination || defaultExplorerPagination).pipe(
+          switchMap((repositoriesResponse: RepositoriesResponse) =>
+            of(
+              explorerActions.pageInfo({ pageInfo: repositoriesResponse.pageInfo }),
+              explorerActions.loadRepositoriesSuccess({ repositories: repositoriesResponse.repositories }),
             ),
           ),
+          catchError(() => of(explorerActions.loadRepositoriesError({ error: ExplorerError.LoadRepositories }))),
+        ),
       ),
     ),
   );
 
   loadRepository$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ExplorerAction.RepositoryRequest),
+      ofType(ExplorerAction.LoadRepository),
       exhaustMap((action: ActionPropsRepositoryRequest) =>
-        this.explorerService
-          .loadRepository(action.owner, action.name, action.pagination || defaultExplorerPagination)
-          .pipe(
-            switchMap((repositoryResponse: RepositoryResponse) =>
-              of(
-                explorerActions.pageInfo({ pageInfo: repositoryResponse.pageInfo }),
-                explorerActions.repository({ repository: repositoryResponse.repository }),
-              ),
+        this.explorerService.loadRepository(action.owner, action.name, action.pagination || defaultExplorerPagination).pipe(
+          switchMap((repositoryResponse: RepositoryResponse) =>
+            of(
+              explorerActions.pageInfo({ pageInfo: repositoryResponse.pageInfo }),
+              explorerActions.loadRepositorySuccess({ repository: repositoryResponse.repository }),
             ),
           ),
+          catchError(() => of(explorerActions.loadRepositoryError({ error: ExplorerError.LoadRepository }))),
+        ),
       ),
     ),
   );

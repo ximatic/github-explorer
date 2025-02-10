@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Observable, skip, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
@@ -14,8 +14,8 @@ import { SelectModule } from 'primeng/select';
 import { ExplorerPagination, Repository } from '../../models/explorer.model';
 
 import { explorerActions } from '../../store/explorer.actions';
-import { selectExplorerRepositories } from '../../store/explorer.selectors';
-import { ExplorerState } from '../../store/explorer.state';
+import { selectExplorerEvent, selectExplorerRepositories } from '../../store/explorer.selectors';
+import { ExplorerEvent, ExplorerEventName, ExplorerEventType, ExplorerState } from '../../store/explorer.state';
 
 import { PaginationComponent } from '../pagination/pagination.component';
 import { RepositoryInfoComponent } from '../repository-info/repository-info.component';
@@ -42,6 +42,7 @@ import { RepositoryInfoComponent } from '../repository-info/repository-info.comp
 export class RepositoriesComponent implements OnInit, OnDestroy {
   // ngrx
   repositories$!: Observable<Repository[] | null>;
+  explorerEvent$!: Observable<ExplorerEvent | null>;
 
   // state flags
   isDataLoading = true;
@@ -68,7 +69,7 @@ export class RepositoriesComponent implements OnInit, OnDestroy {
 
   onPaginationChange(pagination: ExplorerPagination): void {
     this.isDataLoading = true;
-    this.store.dispatch(explorerActions.repositoriesRequest({ pagination }));
+    this.dispatchRepositoriesRequest(pagination);
   }
 
   // repositories
@@ -80,15 +81,39 @@ export class RepositoriesComponent implements OnInit, OnDestroy {
     this.router.navigate([`${repository.owner}/${repository.name}`]);
   }
 
+  private dispatchRepositoriesRequest(pagination?: ExplorerPagination): void {
+    this.store.dispatch(explorerActions.loadRepositories({ pagination }));
+  }
+
   // initialization
 
   private init(): void {
-    this.store.dispatch(explorerActions.repositoriesRequest({}));
+    this.dispatchRepositoriesRequest();
+    this.initState();
+  }
 
+  private initState(): void {
     this.repositories$ = this.store.select(selectExplorerRepositories);
     this.subscription.add(
-      this.repositories$.pipe(skip(1)).subscribe(() => {
+      this.repositories$.subscribe((repositories: Repository[] | null) => {
+        if (!repositories) {
+          return;
+        }
+
         this.isDataLoading = false;
+      }),
+    );
+
+    this.explorerEvent$ = this.store.select(selectExplorerEvent);
+    this.subscription.add(
+      this.explorerEvent$.subscribe((explorerEvent: ExplorerEvent | null) => {
+        if (!explorerEvent) {
+          return;
+        }
+
+        if (explorerEvent.name === ExplorerEventName.LoadRepositories && explorerEvent.type === ExplorerEventType.Error) {
+          this.isDataLoading = false;
+        }
       }),
     );
   }

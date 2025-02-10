@@ -14,9 +14,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 
 import { explorerActions } from '../../store/explorer.actions';
-import { ExplorerError } from '../../store/explorer.errors';
-import { selectExplorerError, selectExplorerToken } from '../../store/explorer.selectors';
-import { ExplorerState } from '../../store/explorer.state';
+import { selectExplorerEvent, selectExplorerToken } from '../../store/explorer.selectors';
+import { ExplorerEvent, ExplorerEventName, ExplorerEventType, ExplorerState } from '../../store/explorer.state';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -40,8 +39,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class TokenComponent implements OnInit, OnDestroy {
   // ngrx
-  error$!: Observable<ExplorerError | null>;
   token$!: Observable<string | null>;
+  explorerEvent$!: Observable<ExplorerEvent | null>;
 
   // state flags
   isInvalidToken = signal(false);
@@ -91,10 +90,14 @@ export class TokenComponent implements OnInit, OnDestroy {
     // reset Apollo's cache as new API Token will be used
     this.apollo.client.clearStore();
 
-    this.error$ = this.store.select(selectExplorerError);
+    this.explorerEvent$ = this.store.select(selectExplorerEvent);
     this.subscription.add(
-      this.error$.pipe(skip(1)).subscribe((error: ExplorerError | null) => {
-        if (error && error === ExplorerError.InvalidToken) {
+      this.explorerEvent$.subscribe((explorerEvent: ExplorerEvent | null) => {
+        if (!explorerEvent) {
+          return;
+        }
+
+        if (explorerEvent.name === ExplorerEventName.VerifyToken && explorerEvent.type === ExplorerEventType.Error) {
           this.isSubmitInProgress.set(false);
           this.isInvalidToken.set(true);
         }

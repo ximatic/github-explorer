@@ -7,13 +7,16 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 
-import { MOCK_INITIAL_EXPLORER_STATE, MOCK_TOKEN_1 } from '../../../../__mocks__/explorer.mocks';
+import {
+  MOCK_EXPLORER_EVENT_VERIFY_TOKEN_ERROR,
+  MOCK_INITIAL_EXPLORER_STATE,
+  MOCK_TOKEN_1,
+} from '../../../../__mocks__/explorer.mocks';
 
 import { ExplorerAction } from '../../store/explorer.actions';
-import { selectExplorerError, selectExplorerToken } from '../../store/explorer.selectors';
+import { selectExplorerEvent, selectExplorerToken } from '../../store/explorer.selectors';
 
 import { TokenComponent } from './token.component';
-import { ExplorerError } from '../../store/explorer.errors';
 
 describe('TokenComponent', () => {
   let component: TokenComponent;
@@ -22,7 +25,7 @@ describe('TokenComponent', () => {
   let router: Router;
   let store: MockStore;
   let mockExplorerTokenSelector: any;
-  let mockExplorerErrorSelector: any;
+  let mockExplorerEventSelector: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -38,7 +41,7 @@ describe('TokenComponent', () => {
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     mockExplorerTokenSelector = store.overrideSelector(selectExplorerToken, null);
-    mockExplorerErrorSelector = store.overrideSelector(selectExplorerError, null);
+    mockExplorerEventSelector = store.overrideSelector(selectExplorerEvent, null);
   });
 
   beforeEach(() => {
@@ -73,12 +76,11 @@ describe('TokenComponent', () => {
 
     fixture.detectChanges();
 
-    mockExplorerErrorSelector.setResult(ExplorerError.InvalidToken);
+    mockExplorerEventSelector.setResult(MOCK_EXPLORER_EVENT_VERIFY_TOKEN_ERROR);
 
     store.refreshState();
 
-    component.error$.subscribe((error: ExplorerError | null) => {
-      expect(error).toEqual(ExplorerError.InvalidToken);
+    component.explorerEvent$.subscribe(() => {
       expect(component.isSubmitInProgress()).toEqual(false);
       expect(component.isInvalidToken()).toEqual(true);
       expect(navigateSpy).toHaveBeenCalledTimes(0);

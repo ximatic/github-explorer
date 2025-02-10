@@ -1,4 +1,5 @@
 import { ExplorerPaginationItemsKey, ExplorerPaginationCursorKey } from '../app/explorer/models/explorer.model';
+import { ExplorerEvent, ExplorerEventName, ExplorerEventType } from '../app/explorer/store/explorer.state';
 
 // common mocks
 
@@ -35,6 +36,53 @@ export const MOCK_EXPLORER_PAGE_INFO_1 = {
   cursorEnd: null,
   hasNextPage: false,
   hasPreviousPage: false,
+};
+
+// event mocks
+
+export const MOCK_EXPLORER_EVENT_VERIFY_TOKEN_PROCESSING: ExplorerEvent = {
+  name: ExplorerEventName.VerifyToken,
+  type: ExplorerEventType.Processing,
+};
+
+export const MOCK_EXPLORER_EVENT_VERIFY_TOKEN_SUCCESS: ExplorerEvent = {
+  name: ExplorerEventName.VerifyToken,
+  type: ExplorerEventType.Success,
+};
+
+export const MOCK_EXPLORER_EVENT_VERIFY_TOKEN_ERROR: ExplorerEvent = {
+  name: ExplorerEventName.VerifyToken,
+  type: ExplorerEventType.Error,
+};
+
+export const MOCK_EXPLORER_EVENT_LOAD_REPOSITORIES_PROCESSING: ExplorerEvent = {
+  name: ExplorerEventName.LoadRepositories,
+  type: ExplorerEventType.Processing,
+};
+
+export const MOCK_EXPLORER_EVENT_LOAD_REPOSITORIES_SUCCESS: ExplorerEvent = {
+  name: ExplorerEventName.LoadRepositories,
+  type: ExplorerEventType.Success,
+};
+
+export const MOCK_EXPLORER_EVENT_LOAD_REPOSITORIES_ERROR: ExplorerEvent = {
+  name: ExplorerEventName.LoadRepositories,
+  type: ExplorerEventType.Error,
+};
+
+export const MOCK_EXPLORER_EVENT_LOAD_REPOSITORY_PROCESSING: ExplorerEvent = {
+  name: ExplorerEventName.LoadRepository,
+  type: ExplorerEventType.Processing,
+};
+
+export const MOCK_EXPLORER_EVENT_LOAD_REPOSITORY_SUCCESS: ExplorerEvent = {
+  name: ExplorerEventName.LoadRepository,
+  type: ExplorerEventType.Success,
+};
+
+export const MOCK_EXPLORER_EVENT_LOAD_REPOSITORY_ERROR: ExplorerEvent = {
+  name: ExplorerEventName.LoadRepository,
+  type: ExplorerEventType.Error,
 };
 
 // store mocks

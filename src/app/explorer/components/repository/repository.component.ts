@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Observable, skip, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
@@ -14,8 +14,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ExplorerPagination, Repository } from '../../models/explorer.model';
 
 import { explorerActions } from '../../store/explorer.actions';
-import { selectExplorerRepository } from '../../store/explorer.selectors';
-import { ExplorerState } from '../../store/explorer.state';
+import { selectExplorerEvent, selectExplorerRepository } from '../../store/explorer.selectors';
+import { ExplorerEvent, ExplorerEventName, ExplorerEventType, ExplorerState } from '../../store/explorer.state';
 
 import { PaginationComponent } from '../pagination/pagination.component';
 import { RepositoryInfoComponent } from '../repository-info/repository-info.component';
@@ -42,6 +42,7 @@ import { RepositoryInfoComponent } from '../repository-info/repository-info.comp
 export class RepositoryComponent implements OnInit, OnDestroy {
   // ngrx
   repository$!: Observable<Repository | null>;
+  explorerEvent$!: Observable<ExplorerEvent | null>;
 
   repository: Repository | null = null;
 
@@ -87,10 +88,26 @@ export class RepositoryComponent implements OnInit, OnDestroy {
   private initState(): void {
     this.repository$ = this.store.select(selectExplorerRepository);
     this.subscription.add(
-      this.repository$.pipe(skip(1)).subscribe((repository: Repository | null) => {
-        this.repository = repository;
+      this.repository$.subscribe((repository: Repository | null) => {
+        if (!repository) {
+          return;
+        }
 
+        this.repository = repository;
         this.isDataLoading = false;
+      }),
+    );
+
+    this.explorerEvent$ = this.store.select(selectExplorerEvent);
+    this.subscription.add(
+      this.explorerEvent$.subscribe((explorerEvent: ExplorerEvent | null) => {
+        if (!explorerEvent) {
+          return;
+        }
+
+        if (explorerEvent.name === ExplorerEventName.LoadRepository && explorerEvent.type === ExplorerEventType.Error) {
+          this.isDataLoading = false;
+        }
       }),
     );
   }
@@ -108,7 +125,7 @@ export class RepositoryComponent implements OnInit, OnDestroy {
   private dispatchRepositoryRequest(pagination?: ExplorerPagination): void {
     if (this.owner && this.name) {
       this.store.dispatch(
-        explorerActions.repositoryRequest({
+        explorerActions.loadRepository({
           owner: this.owner,
           name: this.name,
           pagination,
