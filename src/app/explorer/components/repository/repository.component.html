@@ -35,12 +35,12 @@
     </div>
 
     <div class="mb-4" [ngClass]="{ 'panel--disabled': isDataLoading }">
-      <p-panel header="Issues">
+      <p-panel [header]="'REPOSITORY.ISSUES.LABEL' | translate">
         @for (issue of repository.issues; track $index; let isLast = $last) {
           <div [ngClass]="{ 'mb-2': !isLast }">
             <div>
               <span class="font-bold">{{ issue.title }}</span>
-              <a [href]="issue.url" target="_blank" class="ml-2" [title]="'REPOSITORY.ISSUE.URL' | translate">
+              <a [href]="issue.url" target="_blank" class="ml-2" [title]="'REPOSITORY.ISSUES.URL' | translate">
                 <span class="pi pi-link text-color"></span>
               </a>
             </div>
@@ -50,7 +50,7 @@
           </div>
           <p-divider *ngIf="!isLast" />
         } @empty {
-          <div>{{ 'REPOSITORY.ISSUE.EMPTY' | translate }}</div>
+          <div>{{ 'REPOSITORY.ISSUES.EMPTY' | translate }}</div>
         }
       </p-panel>
     </div>

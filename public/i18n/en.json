@@ -47,7 +47,8 @@
       "TITLE": "No repository available.",
       "SUBTITLE": "Please refresh page or try again later."
     },
-    "ISSUE": {
+    "ISSUES": {
+      "LABEL": "Issues",
       "EMPTY": "No issues available for selected repository.",
       "URL": "Issue URL"
     }
