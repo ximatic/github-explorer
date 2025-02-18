@@ -8,8 +8,9 @@ import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 
+import { DEFAULT_EXPLORER_PAGINATION } from '../../constants/explorer.const';
+
 import {
-  defaultExplorerPagination,
   ExplorerPageInfo,
   ExplorerPagination,
   ExplorerPaginationCursorKey,
@@ -55,8 +56,8 @@ export class PaginationComponent implements OnInit, OnDestroy {
       code: 50,
     },
   ];
-  itemsPerPage = defaultExplorerPagination.itemsValue;
-  pagination: ExplorerPagination = defaultExplorerPagination;
+  itemsPerPage = DEFAULT_EXPLORER_PAGINATION.itemsValue;
+  pagination: ExplorerPagination = DEFAULT_EXPLORER_PAGINATION;
 
   // other
   private subscription = new Subscription();
@@ -110,7 +111,7 @@ export class PaginationComponent implements OnInit, OnDestroy {
 
     // reset to default pagination and change itemsValue
     this.pagination = {
-      ...defaultExplorerPagination,
+      ...DEFAULT_EXPLORER_PAGINATION,
       itemsValue: itemsPerPage,
     };
     this.updatePagination();

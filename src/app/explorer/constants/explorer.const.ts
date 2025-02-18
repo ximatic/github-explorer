@@ -2,7 +2,7 @@ import { ExplorerPagination, ExplorerPaginationItemsKey, ExplorerPaginationCurso
 
 export const DEFAULT_LANGUAGE = 'en';
 
-export const defaultExplorerPagination: ExplorerPagination = {
+export const DEFAULT_EXPLORER_PAGINATION: ExplorerPagination = {
   itemsKey: ExplorerPaginationItemsKey.First,
   itemsValue: 5,
   cursorKey: ExplorerPaginationCursorKey.After,

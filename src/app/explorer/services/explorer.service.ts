@@ -5,8 +5,9 @@ import { ApolloQueryResult } from '@apollo/client/core';
 import { Apollo, gql } from 'apollo-angular';
 import { catchError, map, Observable, of } from 'rxjs';
 
+import { DEFAULT_EXPLORER_PAGINATION } from '../constants/explorer.const';
+
 import {
-  defaultExplorerPagination,
   ExplorerPageInfo,
   ExplorerPagination,
   RepositoriesResponse,
@@ -56,7 +57,7 @@ export class ExplorerService {
 
   // github - GraphQL
 
-  loadRepositories(pagination: ExplorerPagination = defaultExplorerPagination): Observable<RepositoriesResponse> {
+  loadRepositories(pagination: ExplorerPagination = DEFAULT_EXPLORER_PAGINATION): Observable<RepositoriesResponse> {
     return this.apollo
       .query<GraphqlRepositoriesData>({
         query: gql`
@@ -107,7 +108,7 @@ export class ExplorerService {
   loadRepository(
     owner: string,
     name: string,
-    pagination: ExplorerPagination = defaultExplorerPagination,
+    pagination: ExplorerPagination = DEFAULT_EXPLORER_PAGINATION,
   ): Observable<RepositoryResponse> {
     return this.apollo
       .query<GraphqlRepositoryData>({

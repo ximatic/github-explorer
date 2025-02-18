@@ -7,7 +7,9 @@ import { map, catchError, switchMap, exhaustMap } from 'rxjs/operators';
 
 import { ExplorerService } from '../services/explorer.service';
 
-import { defaultExplorerPagination, RepositoriesResponse, RepositoryResponse } from '../models/explorer.model';
+import { DEFAULT_EXPLORER_PAGINATION } from '../constants/explorer.const';
+
+import { RepositoriesResponse, RepositoryResponse } from '../models/explorer.model';
 
 import {
   ActionPropsRepositoriesRequest,
@@ -53,7 +55,7 @@ export class ExplorerEffects {
     this.actions$.pipe(
       ofType(ExplorerAction.LoadRepositories),
       exhaustMap((action: ActionPropsRepositoriesRequest) =>
-        this.explorerService.loadRepositories(action.pagination || defaultExplorerPagination).pipe(
+        this.explorerService.loadRepositories(action.pagination || DEFAULT_EXPLORER_PAGINATION).pipe(
           switchMap((repositoriesResponse: RepositoriesResponse) =>
             of(
               explorerActions.pageInfo({ pageInfo: repositoriesResponse.pageInfo }),
@@ -70,7 +72,7 @@ export class ExplorerEffects {
     this.actions$.pipe(
       ofType(ExplorerAction.LoadRepository),
       exhaustMap((action: ActionPropsRepositoryRequest) =>
-        this.explorerService.loadRepository(action.owner, action.name, action.pagination || defaultExplorerPagination).pipe(
+        this.explorerService.loadRepository(action.owner, action.name, action.pagination || DEFAULT_EXPLORER_PAGINATION).pipe(
           switchMap((repositoryResponse: RepositoryResponse) =>
             of(
               explorerActions.pageInfo({ pageInfo: repositoryResponse.pageInfo }),

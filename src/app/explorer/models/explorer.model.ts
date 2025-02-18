@@ -55,10 +55,3 @@ export interface ExplorerPagination {
   cursorKey: ExplorerPaginationCursorKey;
   cursorValue: string | null;
 }
-
-export const defaultExplorerPagination: ExplorerPagination = {
-  itemsKey: ExplorerPaginationItemsKey.First,
-  itemsValue: 5,
-  cursorKey: ExplorerPaginationCursorKey.After,
-  cursorValue: null,
-};
